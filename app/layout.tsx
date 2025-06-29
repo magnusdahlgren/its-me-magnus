@@ -15,12 +15,12 @@ export default function RootLayout({
       <body>
         <header className="site-header">
           <p className="site-logo">
-            <Link href="/">It’s Me Magnus</Link>
+            <Link href="/p/start">It’s Me Magnus</Link>
           </p>
           <nav>
             <ul>
               <li>
-                <Link href="/">Start</Link>
+                <Link href="/p/start">Start</Link>
               </li>
               <li>
                 <Link href="/all-tags">All tags</Link>
