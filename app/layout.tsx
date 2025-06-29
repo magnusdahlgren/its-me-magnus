@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
       <body>
@@ -26,7 +26,7 @@ export default function RootLayout({
                 <Link href="/all-tags">All tags</Link>
               </li>
               <li>
-                <Link href="/random-note">Random notet</Link>
+                <Link href="/random">Random note</Link>
               </li>
             </ul>
           </nav>
