@@ -219,7 +219,7 @@ pre code {
 /* 4. Notes             */
 /* ==================== */
 
-.note {
+article {
   max-width: 800px;
   margin: 0 auto;
   padding: 3rem;
@@ -228,50 +228,50 @@ pre code {
   margin-bottom: 2rem;
 }
 
-.note .note {
+article article {
   padding: 0;
   margin-bottom: 0.5rem;
 }
 
-.note:not(.note .note) > :first-child {
+article:not(article article) > :first-child {
   margin-top: 0;
 }
 
-.note:not(.note .note) > :last-child {
+article:not(article article) > :last-child {
   margin-bottom: 0;
 }
 
-.note h1,
-h2,
-h3,
-p {
+article h1,
+article h2,
+article h3,
+article p {
   line-height: 1.65;
 }
 
-.note img {
+article img {
   width: 100%;
   margin-bottom: 1rem;
 }
 
-table {
+article table {
   width: 100%;
   border-collapse: collapse;
   margin: 2rem 0;
 }
 
-th,
-td {
+article th,
+article td {
   text-align: left;
   padding: 0.5rem 0.75rem;
   vertical-align: top;
 }
 
-thead {
+article thead {
   font-weight: 500;
   border-bottom: 1px solid #222;
 }
 
-tbody tr + tr {
+article tbody tr + tr {
   border-top: 1px solid #222;
 }
 
@@ -301,17 +301,17 @@ p.note--tags {
   margin-bottom: 0.5rem;
 }
 
-.note ul,
-.note ol {
+article ul,
+article ol {
   margin-top: 0.3rem;
   margin-bottom: 1.5rem;
 }
 
-.note li {
+article li {
   margin: 0 0 0.3rem 2rem;
 }
 
-.note blockquote {
+article blockquote {
   border-left: 3px solid #ddd;
   padding-left: 1rem;
   margin-bottom: 2rem;
@@ -319,15 +319,15 @@ p.note--tags {
   font-style: italic;
 }
 
-figure {
+article figure {
   margin: 0 0 2rem 0;
 }
 
-figure img {
+article figure img {
   margin-bottom: 0 !important;
 }
 
-figcaption {
+article figcaption {
   font-size: 1.1rem;
   line-height: 1.4;
   color: #666;
@@ -335,10 +335,10 @@ figcaption {
   font-style: italic;
 }
 
-li.important a {
+article li.important a {
   font-weight: 600;
 }
 
-li.untagged a {
+article li.untagged a {
   font-style: italic;
 }

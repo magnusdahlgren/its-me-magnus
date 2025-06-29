@@ -1,3 +1,4 @@
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata = {
@@ -14,18 +15,18 @@ export default function RootLayout({
       <body>
         <header className="site-header">
           <p className="site-logo">
-            <a href="">It’s Me Magnus</a>
+            <Link href="/">It’s Me Magnus</Link>
           </p>
           <nav>
             <ul>
               <li>
-                <a href="">Start</a>
+                <Link href="/">Start</Link>
               </li>
               <li>
-                <a href="">All tags</a>
+                <Link href="/all-tags">All tags</Link>
               </li>
               <li>
-                <a href="">Random note</a>
+                <Link href="/random-note">Random notet</Link>
               </li>
             </ul>
           </nav>
