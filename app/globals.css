@@ -1,42 +1,344 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap");
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ==================== */
+/* 1. Base Reset        */
+/* ==================== */
 
 html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+button,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
-}
-
-a {
-  color: inherit;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: none;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* ==================== */
+/* 2. Body / Typography */
+/* ==================== */
+
+body {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #222;
+  background-color: #f9f9f9;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  letter-spacing: 0.01em;
+}
+
+a {
+  color: #0077cc;
+  text-decoration: underline;
+}
+a:hover {
+  color: #005fa3;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+code {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+pre code {
+  background: #f5f5f5;
+  padding: 1rem;
+  display: block;
+  white-space: pre;
+  margin-bottom: 1rem;
+  line-height: 1.7rem;
+  border-radius: 0.5rem;
+}
+
+/* ==================== */
+/* 3. Site Header       */
+/* ==================== */
+.site-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 2em;
+}
+
+.site-header ul {
+  list-style: none;
+  display: flex;
+}
+
+.site-header li {
+  padding: 0.1rem 0.8rem;
+  border-right: 1px solid #222;
+}
+
+.site-header li:last-child {
+  padding-right: 0;
+  border: none;
+}
+
+.site-header a {
+  color: #222;
+  text-decoration: none;
+}
+
+.site-header a:hover {
+  color: #005fa3;
+}
+
+.site-logo {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+/* ==================== */
+/* 4. Notes             */
+/* ==================== */
+
+article {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem;
+  border-radius: 1rem;
+  background: #fff;
+  margin-bottom: 2rem;
+}
+
+article article {
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+article:not(article article) > :first-child {
+  margin-top: 0;
+}
+
+article:not(article article) > :last-child {
+  margin-bottom: 0;
+}
+
+article h1,
+article h2,
+article h3,
+article p {
+  line-height: 1.65;
+}
+
+article img {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+}
+
+article th,
+article td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+article thead {
+  font-weight: 500;
+  border-bottom: 1px solid #222;
+}
+
+article tbody tr + tr {
+  border-top: 1px solid #222;
+}
+
+.note--short p {
+  font-size: 2rem;
+}
+
+p.note--date {
+  font-size: 1rem;
+  color: #999;
+  font-weight: 300;
+  margin: 1rem 0 0 0;
+}
+
+p.note--tags {
+  margin: 3rem 0 0 0;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxnIHRyYW5zZm9ybT0ic2NhbGUoLTEsMSkgdHJhbnNsYXRlKC0yNTYsMCkiPjxwYXRoIGQ9Ik0xMjIuNywyNS45LDQyLDQyLDI1LjksMTIyLjdhOCw4LDAsMCwwLDIuMiw3LjJMMTIzLjUsMjM0LjNhNy45LDcuOSwwLDAsMCwxMS4zLDBsOTAuNS05MC41YTcuOSw3LjksMCwwLDAsMC0xMS4zTDEyOS45LDI4LjFBOCw4LDAsMCwwLDEyMi43LDI1LjlaIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiIvPjxjaXJjbGUgY3g9Ijg0IiBjeT0iODQiIHI9IjEyIi8+PC9nPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1.5rem;
+  padding-left: 2rem;
+  font-size: inherit;
+}
+
+.note--tagged h2 {
+  font-size: inherit;
+  margin-bottom: 0.5rem;
+}
+
+article ul,
+article ol {
+  margin-top: 0.3rem;
+  margin-bottom: 1.5rem;
+}
+
+article li {
+  margin: 0 0 0.3rem 2rem;
+}
+
+article blockquote {
+  border-left: 3px solid #ddd;
+  padding-left: 1rem;
+  margin-bottom: 2rem;
+  color: #555;
+  font-style: italic;
+}
+
+article figure {
+  margin: 0 0 2rem 0;
+}
+
+article figure img {
+  margin-bottom: 0 !important;
+}
+
+article figcaption {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+article li.important a {
+  font-weight: 600;
+}
+
+article li.untagged a {
+  font-style: italic;
 }
