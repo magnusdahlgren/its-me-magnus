@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import ReactMarkdown from "react-markdown";
 
 export default async function NotePage({ params }: { params: { id: string } }) {
   const { data, error } = await supabase
@@ -19,12 +20,21 @@ export default async function NotePage({ params }: { params: { id: string } }) {
   if (!data) return <div>Loading…</div>;
 
   return (
-    <article>
+    <article className="note">
       {data.title && <h1>{data.title}</h1>}
       {data.image_url && (
         <img src={data[0].image_url} alt={data.image_caption || ""} />
       )}
-      {data.content}
+      <ReactMarkdown>{data.content}</ReactMarkdown>
+      <footer>
+        <p className="note--date">
+          {new Intl.DateTimeFormat("en-GB", {
+            day: "numeric",
+            month: "numeric",
+            year: "2-digit",
+          }).format(new Date(data.created_at))}
+        </p>
+      </footer>
     </article>
   );
 }
