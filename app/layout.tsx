@@ -23,7 +23,7 @@ export default function RootLayout({
                 <Link href="/p/start">Start</Link>
               </li>
               <li>
-                <Link href="/all-tags">All tags</Link>
+                <Link href="/tags">All tags</Link>
               </li>
               <li>
                 <Link href="/random">Random note</Link>

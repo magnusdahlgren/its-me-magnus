@@ -1,6 +1,7 @@
 import { Note } from "@/types/note";
 import { supabase } from "@/lib/supabase";
 import ReactMarkdown from "react-markdown";
+import { renderTagsForNote } from "@/lib/tags";
 
 interface Props {
   note: Note;
@@ -35,16 +36,7 @@ export async function NoteView({ note }: Readonly<Props>) {
             year: "2-digit",
           }).format(new Date(note.created_at))}
         </p>
-        {tags.length > 0 && (
-          <p className="note--tags">
-            {tags.map((tag, i) => (
-              <span key={tag.id}>
-                <a href={`/p/${tag.id}`}>{tag.title || tag.id}</a>
-                {i < tags.length - 1 && ", "}
-              </span>
-            ))}
-          </p>
-        )}
+        {renderTagsForNote(note.id)}
       </footer>
     </article>
   );
