@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { Tag } from "@/types/tag";
 import { Note } from "@/types/note";
 import { JSX } from "react";
+import Link from "next/link";
 
 export async function getTagsForNote(noteId: string): Promise<Tag[]> {
   const { data, error } = await supabase
@@ -14,6 +15,8 @@ export async function getTagsForNote(noteId: string): Promise<Tag[]> {
   return data.map((entry) => ({
     id: entry.tag.id,
     title: entry.tag.title,
+    isImportant: null,
+    notesCount: null,
   }));
 }
 
@@ -38,14 +41,9 @@ export async function getAllTags(): Promise<Tag[]> {
   return data.map((tag) => ({
     id: tag.tag_id,
     title: tag.title,
-    link: `/p/${tag.id}`,
     isImportant: tag.is_important,
     notesCount: tag.notes_count,
   }));
-}
-
-export async function getTagUrl(tagId: string): Promise<string | null> {
-  return `/p/tagId`;
 }
 
 export async function renderTagsForNote(
@@ -58,9 +56,9 @@ export async function renderTagsForNote(
   return (
     <p className="note--tags">
       {tags.flatMap((tag, i) => [
-        <a key={tag.id} href={`/p/${tag.id}`}>
+        <Link key={tag.id} href={`/p/${tag.id}`}>
           {tag.title || tag.id}
-        </a>,
+        </Link>,
         i < tags.length - 1 ? ", " : null,
       ])}
     </p>

@@ -8,25 +8,18 @@ interface Props {
 }
 
 export async function NoteView({ note }: Readonly<Props>) {
-  const { data: tagEntries } = await supabase
-    .from("notes_tags")
-    .select("tag:tag_id(id, title)")
-    .eq("note_id", note.id);
-
-  const tags = (tagEntries ?? []).map((entry) => entry.tag);
-
   return (
     <article className="note">
       {note.title && <h1>{note.title}</h1>}
 
       {note.image_url && (
         <figure>
-          <img src={"/" + note.image_url} alt={note.image_caption || ""} />
+          <img src={note.image_url} alt={note.image_caption ?? ""} />
           {note.image_caption && <figcaption>{note.image_caption}</figcaption>}
         </figure>
       )}
 
-      <ReactMarkdown>{note.content}</ReactMarkdown>
+      <ReactMarkdown>{note.content ?? ""}</ReactMarkdown>
 
       <footer>
         <p className="note--date">

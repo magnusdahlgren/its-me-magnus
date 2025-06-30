@@ -1,9 +1,8 @@
 import { getAllTags } from "@/lib/tags";
 import Link from "next/link";
 
-const tags = await getAllTags();
-
-export default function TagsPage() {
+export default async function TagsPage() {
+  const tags = await getAllTags();
   return (
     <article>
       <h1>All Tags</h1>
