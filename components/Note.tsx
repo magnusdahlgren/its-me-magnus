@@ -1,5 +1,4 @@
 import { Note } from "@/types/note";
-import { supabase } from "@/lib/supabase";
 import ReactMarkdown from "react-markdown";
 import { renderTagsForNote } from "@/lib/tags";
 

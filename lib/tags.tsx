@@ -3,29 +3,29 @@ import { Tag } from "@/types/tag";
 import { Note } from "@/types/note";
 import { JSX } from "react";
 import Link from "next/link";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 export async function getTagsForNote(noteId: string): Promise<Tag[]> {
   const { data, error } = await supabase
     .from("notes_tags")
-    .select("tag:tag_id(id, title)")
+    .select("tag:tag_id(id, title, is_important)")
     .eq("note_id", noteId);
 
   if (error || !data) return [];
 
-  return data.map((entry) => ({
-    id: entry.tag.id,
-    title: entry.tag.title,
-    isImportant: null,
-    notesCount: null,
+  return (data as any[]).map((entry) => ({
+    ...(entry.tag as Omit<Tag, "notesCount">),
+    notesCount: 0,
   }));
 }
 
 export async function getNotesForTag(tagId: string): Promise<Note[]> {
-  const { data, error } = await supabase
+  const { data, error } = (await supabase
     .from("notes_tags")
-    .select("note:note_id(id, title, content, image_url, created_at)")
-    .eq("tag_id", tagId);
-
+    .select(
+      "note:note_id(id, title, content, image_url, image_caption, created_at, updated_at)"
+    )
+    .eq("tag_id", tagId)) as PostgrestSingleResponse<{ note: Note }[]>;
   if (error || !data) return [];
 
   return data.map((entry) => entry.note);
