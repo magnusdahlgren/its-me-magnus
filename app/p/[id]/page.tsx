@@ -23,7 +23,10 @@ export default async function NotePage({ params }: { params: { id: string } }) {
     <article className="note">
       {data.title && <h1>{data.title}</h1>}
       {data.image_url && (
-        <img src={data.image_url} alt={data.image_caption || ""} />
+        <figure>
+          <img src={"/" + data.image_url} alt={data.image_caption || ""} />
+          {data.image_caption && <figcaption>{data.image_caption}</figcaption>}
+        </figure>
       )}
       <ReactMarkdown>{data.content}</ReactMarkdown>
       <footer>
