@@ -107,6 +107,7 @@ body {
   font-size: 1.2rem;
   color: #222;
   background-color: #f9f9f9;
+  margin-bottom: 7rem;
 }
 
 h1,
@@ -287,7 +288,7 @@ p.note--date {
 }
 
 p.note--tags {
-  margin: 3rem 0 0 0;
+  margin: 2rem 0 0 0;
   background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxnIHRyYW5zZm9ybT0ic2NhbGUoLTEsMSkgdHJhbnNsYXRlKC0yNTYsMCkiPjxwYXRoIGQ9Ik0xMjIuNywyNS45LDQyLDQyLDI1LjksMTIyLjdhOCw4LDAsMCwwLDIuMiw3LjJMMTIzLjUsMjM0LjNhNy45LDcuOSwwLDAsMCwxMS4zLDBsOTAuNS05MC41YTcuOSw3LjksMCwwLDAsMC0xMS4zTDEyOS45LDI4LjFBOCw4LDAsMCwwLDEyMi43LDI1LjlaIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiIvPjxjaXJjbGUgY3g9Ijg0IiBjeT0iODQiIHI9IjEyIi8+PC9nPjwvc3ZnPg==");
   background-repeat: no-repeat;
   background-position: left center;
