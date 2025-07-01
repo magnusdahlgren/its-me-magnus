@@ -1,27 +1,28 @@
 import { supabase } from "@/lib/supabase";
 import { NoteView } from "@/components/Note";
 import { getNotesForTag } from "@/lib/tags";
-import { Note } from "@/types/note";
 
 export default async function NotePage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
   const { data: note, error: noteError } = await supabase
     .from("notes")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (noteError)
     return (
       <div>
         <p>
-          <strong>Note not found:</strong> {params.id}
+          <strong>Note not found:</strong> {id}
         </p>
         <pre>{JSON.stringify(noteError, null, 2)}</pre>
       </div>
     );
   if (!note) return <div>Loading…</div>;
 
-  const notesToShow = await getNotesForTag(params.id);
+  const notesToShow = await getNotesForTag(note.id);
 
   return (
     <div>
