@@ -3,17 +3,19 @@ import { NoteView } from "@/components/Note";
 import { getNotesForTag } from "@/lib/tags";
 
 export default async function NotePage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
   const { data: note, error: noteError } = await supabase
     .from("notes")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (noteError)
     return (
       <div>
         <p>
-          <strong>Note not found:</strong> {params.id}
+          <strong>Note not found:</strong> {id}
         </p>
         <pre>{JSON.stringify(noteError, null, 2)}</pre>
       </div>
@@ -24,7 +26,7 @@ export default async function NotePage({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <NoteView note={note} />
+      {note && <NoteView note={note} />}
       {notesToShow?.map((note) => (
         <NoteView key={note.id} note={note} />
       ))}

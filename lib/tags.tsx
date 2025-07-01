@@ -20,12 +20,22 @@ export async function getTagsForNote(noteId: string): Promise<Tag[]> {
 }
 
 export async function getNotesForTag(tagId: string): Promise<Note[]> {
+  if (tagId === "_untagged") {
+    const { data, error } = await supabase
+      .from("untagged_notes") // your saved view
+      .select("*");
+
+    if (error || !data) return [];
+    return data as Note[];
+  }
+
   const { data, error } = (await supabase
     .from("notes_tags")
     .select(
       "note:note_id(id, title, content, image_url, image_caption, created_at, updated_at)"
     )
     .eq("tag_id", tagId)) as PostgrestSingleResponse<{ note: Note }[]>;
+
   if (error || !data) return [];
 
   return data.map((entry) => entry.note);
