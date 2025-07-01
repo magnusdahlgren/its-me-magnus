@@ -14,6 +14,12 @@ export default async function TagsPage() {
           </li>
         ))}
       </ul>{" "}
+      <h3>Notes without tags</h3>
+      <ul>
+        <li>
+          <Link href={`/p/_untagged`}>Untagged</Link>
+        </li>
+      </ul>
     </article>
   );
 }
