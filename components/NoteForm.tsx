@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import styles from "./NoteForm.module.css";
 import { TagSelector } from "./TagSelector";
+import { generateNoteId } from "@/lib/notes";
 
 export function NoteForm({
   initialData,
@@ -38,24 +39,103 @@ export function NoteForm({
     }
   }, [form.content]);
 
+  async function handleDelete() {
+    if (!noteId) return;
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this note?"
+    );
+    if (!confirmed) return;
+
+    await supabase.from("notes_tags").delete().eq("note_id", noteId);
+    await supabase.from("notes_tags").delete().eq("tag_id", noteId);
+
+    const { error } = await supabase.from("notes").delete().eq("id", noteId);
+
+    if (error) {
+      console.error("Error deleting note:", error.message);
+      return;
+    }
+
+    router.push("/p/start"); // or any fallback page
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    let currentNoteId = noteId;
+
+    // 1. Insert or update the note
     if (noteId) {
-      await supabase.from("notes").update(form).eq("id", noteId);
-    } else {
-      const { data } = await supabase
+      console.log("Updating note with form data:", form);
+
+      const { tags: _ignored, ...noteData } = form;
+
+      const { error } = await supabase
         .from("notes")
-        .insert([form])
+        .update(noteData)
+        .eq("id", noteId);
+      if (error) {
+        console.error("Error updating note:", error);
+        return;
+      }
+    } else {
+      console.log("Inserting note with form data:", form);
+
+      const noteId = generateNoteId();
+
+      const newNote = {
+        id: noteId,
+        ...form,
+      };
+
+      const { data, error } = await supabase
+        .from("notes")
+        .insert([newNote])
         .select()
         .single();
-      if (data?.id) {
-        router.push(`/p/${data.id}`);
+
+      if (error) {
+        console.error("Error inserting note:", error);
         return;
+      }
+
+      currentNoteId = data.id;
+    }
+
+    // 2. Sync tags in notes_tags
+    if (currentNoteId) {
+      // Remove existing tags
+      const { error: deleteError } = await supabase
+        .from("notes_tags")
+        .delete()
+        .eq("note_id", currentNoteId);
+
+      if (deleteError) {
+        console.error("Error clearing existing tags:", deleteError);
+        return;
+      }
+
+      // Insert new tags
+      const tagInserts = tags.map((tagId) => ({
+        note_id: currentNoteId!,
+        tag_id: tagId,
+      }));
+
+      if (tagInserts.length > 0) {
+        const { error: insertError } = await supabase
+          .from("notes_tags")
+          .insert(tagInserts);
+
+        if (insertError) {
+          console.error("Error inserting tags:", insertError);
+          return;
+        }
       }
     }
 
-    router.refresh();
+    // 3. Redirect
+    router.push(`/p/${currentNoteId}`);
   }
 
   return (
@@ -92,7 +172,11 @@ export function NoteForm({
 
           <div className={styles.modalFooter}>
             {noteId ? (
-              <button type="submit" className={styles.deleteButton}>
+              <button
+                type="button"
+                className={styles.deleteButton}
+                onClick={handleDelete}
+              >
                 Delete Note
               </button>
             ) : null}
