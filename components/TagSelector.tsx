@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./TagSelector.module.css";
 import { supabase } from "@/lib/supabase";
 
@@ -15,6 +15,8 @@ export function TagSelector({
   setSelectedTags: (tags: string[]) => void;
 }) {
   const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const selectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     async function fetchTags() {
@@ -39,7 +41,8 @@ export function TagSelector({
     if (tagId && !selectedTags.includes(tagId)) {
       setSelectedTags([...selectedTags, tagId]);
     }
-    e.target.value = ""; // reset dropdown
+    setShowDropdown(false); // Hide dropdown after selection
+    e.target.value = ""; // Reset the select value
   }
 
   function handleRemove(tagId: string) {
@@ -52,32 +55,49 @@ export function TagSelector({
         {selectedTags.map((tagId) => {
           const tag = allTags.find((t) => t.id === tagId);
           return (
-            <li key={tagId}>
+            <li key={tagId} className={styles.tagPill}>
               {tag?.title}
               <button
                 type="button"
                 onClick={() => handleRemove(tagId)}
                 aria-label={`Remove ${tag?.title}`}
+                className={styles.removeTagButton}
               >
                 ×
               </button>
             </li>
           );
         })}
+        <li>
+          {!showDropdown && (
+            <button
+              type="button"
+              onClick={() => setShowDropdown(true)}
+              className={styles.addTagButton}
+            >
+              + Add tag
+            </button>
+          )}
+
+          {showDropdown && (
+            <select
+              ref={selectRef}
+              onChange={handleSelect}
+              onBlur={() => setShowDropdown(false)}
+              autoFocus
+            >
+              <option value="">-- Select a tag --</option>
+              {allTags
+                .filter((tag) => !selectedTags.includes(tag.id))
+                .map((tag) => (
+                  <option key={tag.id} value={tag.id}>
+                    {tag.title}
+                  </option>
+                ))}
+            </select>
+          )}
+        </li>
       </ul>
-      <label>
-        <span>Tags:</span>
-        <select onChange={handleSelect}>
-          <option value="">-- Select a tag --</option>
-          {allTags
-            .filter((tag) => !selectedTags.includes(tag.id))
-            .map((tag) => (
-              <option key={tag.id} value={tag.id}>
-                {tag.title}
-              </option>
-            ))}
-        </select>
-      </label>
     </div>
   );
 }

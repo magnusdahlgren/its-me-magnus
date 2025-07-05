@@ -25,7 +25,7 @@
   margin-left: 1rem;
 }
 
-.tagList li {
+.tagList li.tagPill {
   display: flex;
   align-items: center; /* vertically centres content */
   gap: 0.5rem; /* spacing between name and button */
@@ -38,18 +38,37 @@
 
 .tagList li button {
   color: #222;
-  background: none;
   border: none;
-  font-size: 1rem;
   cursor: pointer;
   line-height: 1;
   display: flex;
   align-items: center; /* ensures the "×" is vertically centred */
-  padding: 0.2rem;
-  border-radius: 0.2rem;
-  background-color: #ddd;
 }
 
-.tagList li button:hover {
+.tagList li button.removeTagButton {
+  padding: 0.2rem;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+}
+
+.tagList li:hover button.removeTagButton {
+  background-color: #f4c7d3;
+}
+
+.removeTagButton:hover {
+  background-color: #ea889a !important;
+}
+
+.tagList li button:hover,
+.addTagButton:hover {
   background-color: #ccc;
+}
+
+.addTagButton {
+  background: #eee;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
