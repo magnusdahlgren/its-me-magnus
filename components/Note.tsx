@@ -3,10 +3,13 @@ import ReactMarkdown from "react-markdown";
 import { renderTagsForNote } from "@/lib/tags";
 import Link from "next/link";
 import { isAdmin } from "@/lib/auth";
+import { EditNoteLink } from "./EditNoteLink";
 
 interface Props {
   note: Note;
 }
+
+const admin = await isAdmin();
 
 export async function NoteView({ note }: Readonly<Props>) {
   return (
@@ -32,16 +35,7 @@ export async function NoteView({ note }: Readonly<Props>) {
         </p>
         <div className="note--navigation">
           {renderTagsForNote(note.id)}
-          {isAdmin && (
-            <Link
-              href={`/p/${note.id}/edit`}
-              scroll={false}
-              className="edit-note"
-            >
-              <span className="icon" aria-hidden="true" />
-              <span className="text">Edit note</span>
-            </Link>
-          )}
+          <EditNoteLink noteId={note.id} />
         </div>
       </footer>
     </article>
