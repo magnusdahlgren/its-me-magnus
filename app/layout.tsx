@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "./globals.css";
+import { isAdmin } from "@/lib/auth";
 
 export const metadata = {
   title: "It's Me Magnus",
@@ -28,6 +29,17 @@ export default function RootLayout({
               <li>
                 <Link href="/random">Random note</Link>
               </li>
+
+              {isAdmin && (
+                <li>
+                  <Link href="/sign-out">Sign out</Link>
+                </li>
+              )}
+              {!isAdmin && (
+                <li>
+                  <Link href="/sign-in">Sign in</Link>
+                </li>
+              )}
             </ul>
           </nav>
         </header>

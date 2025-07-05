@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import { NoteView } from "@/components/Note";
 import { getNotesForTag } from "@/lib/tags";
+import { isAdmin } from "@/lib/auth";
+import Link from "next/link";
 
 export default async function NotePage({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -30,6 +32,11 @@ export default async function NotePage({ params }: { params: { id: string } }) {
       {notesToShow?.map((note) => (
         <NoteView key={note.id} note={note} />
       ))}
+      {isAdmin && (
+        <Link href={`/p/${note.id}/new`} className="add-note">
+          <span>Add note to this tag</span>
+        </Link>
+      )}
     </div>
   );
 }

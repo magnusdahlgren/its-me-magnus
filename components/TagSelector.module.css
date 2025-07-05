@@ -1,0 +1,55 @@
+.tagSelector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem; /* Ensures 1rem gap between items including select */
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* Ensures tags have uniform spacing */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.tagSelector select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #fff;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.tagList li {
+  display: flex;
+  align-items: center; /* vertically centres content */
+  gap: 0.5rem; /* spacing between name and button */
+  font-size: 0.9rem;
+  padding: 0.2rem 0.8rem;
+  background-color: #eee;
+  border-radius: 1rem;
+  line-height: 1; /* ensures tight vertical alignment */
+}
+
+.tagList li button {
+  color: #222;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center; /* ensures the "×" is vertically centred */
+  padding: 0.2rem;
+  border-radius: 0.2rem;
+  background-color: #ddd;
+}
+
+.tagList li button:hover {
+  background-color: #ccc;
+}
