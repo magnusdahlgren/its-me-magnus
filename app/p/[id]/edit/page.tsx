@@ -53,7 +53,12 @@ export default function EditNoteModal() {
 
   return (
     <div className={styles.modalBackdrop}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={styles.modalContent}
+        onClick={(e) => e.stopPropagation()}
+        role="presentation"
+        tabIndex={-1}
+      >
         {initialData ? (
           <NoteForm noteId={id!} initialData={initialData} />
         ) : (
