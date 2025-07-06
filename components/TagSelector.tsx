@@ -30,7 +30,7 @@ export function TagSelector({
         console.error("Error fetching tags:", error);
         setError("Failed to load tags");
       } else {
-        const tags = (data || []).map((row) => ({
+        const tags = (data ?? []).map((row) => ({
           id: row.id,
           title: row.title,
           isImportant: row.is_important ?? false,

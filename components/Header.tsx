@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { usePathname } from "next/navigation";
 
 export function Header() {
   const { isLoggedIn } = useAuth();
-  const ptrt = encodeURIComponent(usePathname() || "/p/start");
+  const ptrt = encodeURIComponent(usePathname() ?? "/p/start");
 
   return (
     <header className="site-header">

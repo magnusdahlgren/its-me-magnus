@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import { SignInForm } from "@/components/SignInForm";
+import { useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const ptrt = searchParams.get("ptrt");
   const returnTo = ptrt?.startsWith("/") ? ptrt : "/p/start";
