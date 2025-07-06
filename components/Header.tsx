@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { usePathname } from "next/navigation";
+import { SignOutButton } from "./SignOutButton";
 
 export function Header() {
   const { isLoggedIn } = useAuth();
-  const ptrt = encodeURIComponent(usePathname() ?? "/p/start");
 
   return (
     <header className="site-header">
@@ -26,11 +25,13 @@ export function Header() {
           </li>
           {isLoggedIn ? (
             <li>
-              <Link href="/sign-out">Sign out</Link>
+              <SignOutButton />
             </li>
           ) : (
             <li>
-              <Link href={`/sign-in?ptrt=${ptrt}`}>Sign in</Link>
+              <Link href="/sign-in" scroll={false}>
+                Sign in
+              </Link>
             </li>
           )}
         </ul>
