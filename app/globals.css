@@ -111,8 +111,6 @@ body {
   color: #222;
   background-color: #f9f9f9;
   margin-bottom: 7rem;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
