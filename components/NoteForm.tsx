@@ -27,6 +27,7 @@ export function NoteForm({
   const [tags, setTags] = useState<string[]>(
     initialData?.tags || (defaultTagId ? [defaultTagId] : [])
   );
+  const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -41,14 +42,16 @@ export function NoteForm({
 
   async function handleDelete() {
     if (!noteId) return;
+    if (isLoading) return;
 
     const confirmed = window.confirm(
       "Are you sure you want to delete this note?"
     );
     if (!confirmed) return;
 
-    await supabase.from("notes_tags").delete().eq("note_id", noteId);
-    await supabase.from("notes_tags").delete().eq("tag_id", noteId);
+    setIsLoading(true);
+    await supabase.from("notes_tags").delete().eq("note_id", noteId); // Remove tags associated with this note
+    await supabase.from("notes_tags").delete().eq("tag_id", noteId); // Remove this tag from other notes
 
     const { error } = await supabase.from("notes").delete().eq("id", noteId);
 
@@ -62,6 +65,8 @@ export function NoteForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isLoading) return;
+    setIsLoading(true);
 
     let currentNoteId = noteId;
 
@@ -82,10 +87,10 @@ export function NoteForm({
     } else {
       console.log("Inserting note with form data:", form);
 
-      const noteId = generateNoteId();
+      const newNoteId = generateNoteId();
 
       const newNote = {
-        id: noteId,
+        id: newNoteId,
         ...form,
       };
 
@@ -175,12 +180,17 @@ export function NoteForm({
               <button
                 type="button"
                 className={styles.deleteButton}
+                disabled={isLoading}
                 onClick={handleDelete}
               >
                 Delete Note
               </button>
             ) : null}
-            <button type="submit" className={styles.saveButton}>
+            <button
+              type="submit"
+              className={styles.saveButton}
+              disabled={isLoading}
+            >
               {noteId ? "Save Updates" : "Create Note"}
             </button>
           </div>

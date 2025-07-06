@@ -55,8 +55,8 @@
   background-color: #f4c7d3;
 }
 
-.removeTagButton:hover {
-  background-color: #ea889a !important;
+.tagList li button.removeTagButton:hover {
+  background-color: #ea889a;
 }
 
 .tagList li button:hover,

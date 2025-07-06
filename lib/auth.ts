@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-export async function isAdmin(): Promise<boolean> {
+export async function isAuthenticated(): Promise<boolean> {
   const {
     data: { session },
     error,

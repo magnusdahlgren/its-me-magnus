@@ -2,14 +2,14 @@ import { Note } from "@/types/note";
 import ReactMarkdown from "react-markdown";
 import { renderTagsForNote } from "@/lib/tags";
 import Link from "next/link";
-import { isAdmin } from "@/lib/auth";
+import { isAuthenticated } from "@/lib/auth";
 import { EditNoteLink } from "./EditNoteLink";
 
 interface Props {
   note: Note;
 }
 
-const admin = await isAdmin();
+const admin = await isAuthenticated();
 
 export async function NoteView({ note }: Readonly<Props>) {
   return (

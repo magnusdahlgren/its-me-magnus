@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
 import { NoteForm } from "@/components/NoteForm";
 import { supabase } from "@/lib/supabase";
 import { getTagsForNote } from "@/lib/tags";
 import styles from "@/components/NoteForm.module.css";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export default function EditNoteModal() {
   const params = useParams();
-  const router = useRouter();
-
   const id = typeof params.id === "string" ? params.id : undefined;
+  const [error, setError] = useState<string | null>(null);
 
   const [initialData, setInitialData] = useState<null | {
     title?: string;
@@ -20,6 +20,30 @@ export default function EditNoteModal() {
     image_caption?: string;
     tags: string[];
   }>(null);
+
+  let content: React.ReactNode;
+
+  if (error) {
+    content = (
+      <div>
+        <h3>Error</h3>
+        <p>{error}</p>
+        <Link href="/p/start">Go back</Link>
+      </div>
+    );
+  } else if (!id) {
+    content = (
+      <div>
+        <h3>Invalid ID</h3>
+        <p>Invalid Note ID</p>
+        <Link href="/p/start">Go back</Link>
+      </div>
+    );
+  } else if (!initialData) {
+    content = <p>Loading…</p>;
+  } else {
+    content = <NoteForm noteId={id} initialData={initialData} />;
+  }
 
   useEffect(() => {
     if (!id) return;
@@ -33,6 +57,7 @@ export default function EditNoteModal() {
 
       if (noteError || !note) {
         console.error("Error fetching note:", noteError);
+        setError("Failed to load note");
         return;
       }
 
@@ -59,11 +84,7 @@ export default function EditNoteModal() {
         role="presentation"
         tabIndex={-1}
       >
-        {initialData ? (
-          <NoteForm noteId={id!} initialData={initialData} />
-        ) : (
-          <p>Loading…</p>
-        )}
+        {content}
       </div>
     </div>
   );
