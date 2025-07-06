@@ -34,7 +34,7 @@ export async function NoteView({ note }: Readonly<Props>) {
           }).format(new Date(note.created_at))}
         </p>
         <div className="note--navigation">
-          {renderTagsForNote(note.id)}
+          {await renderTagsForNote(note.id)}
           <EditNoteLink noteId={note.id} />
         </div>
       </footer>

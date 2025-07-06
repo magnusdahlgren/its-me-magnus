@@ -103,6 +103,24 @@
   background: #222;
 }
 
+.saveButton:hover {
+  background: #000;
+}
+
+.saveButton:focus {
+  outline: 2px solid #0077cc;
+  outline-offset: 2px;
+}
+
 .deleteButton {
   background: #c0392b;
+}
+
+.deleteButton:hover {
+  background: #a02920;
+}
+
+.deleteButton:focus {
+  outline: 2px solid #c0392b;
+  outline-offset: 2px;
 }

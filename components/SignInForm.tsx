@@ -4,25 +4,33 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-export function SignInForm() {
+export function SignInForm({
+  redirectTo = "/p/start",
+}: Readonly<{
+  redirectTo?: string;
+}>) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrorMsg("");
+    setIsLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    setIsLoading(false);
+
     if (error) {
       setErrorMsg(error.message);
     } else {
-      router.refresh(); // or router.push("/") if you want to redirect
+      router.push(redirectTo);
     }
   }
 
@@ -52,7 +60,9 @@ export function SignInForm() {
         />
       </label>
 
-      <button type="submit">Sign In</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Signing in..." : "Sign In"}
+      </button>
     </form>
   );
 }

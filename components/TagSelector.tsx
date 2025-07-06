@@ -16,10 +16,14 @@ export function TagSelector({
 }) {
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     async function fetchTags() {
+      setIsLoading(true);
+      setError(null);
       const { data, error } = await supabase
         .from("notes")
         .select("id, title")
@@ -28,9 +32,11 @@ export function TagSelector({
 
       if (error) {
         console.error("Error fetching tags:", error);
+        setError("Failed to load tags");
       } else {
         setAllTags(data || []);
       }
+      setIsLoading(false);
     }
 
     fetchTags();
@@ -47,6 +53,14 @@ export function TagSelector({
 
   function handleRemove(tagId: string) {
     setSelectedTags(selectedTags.filter((id) => id !== tagId));
+  }
+
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
+
+  if (isLoading) {
+    return <div className={styles.loading}>Loading tags...</div>;
   }
 
   return (
