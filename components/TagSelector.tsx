@@ -6,10 +6,10 @@ import { Tag } from "@/types/tag";
 export function TagSelector({
   selectedTags,
   setSelectedTags,
-}: {
+}: Readonly<{
   selectedTags: string[];
   setSelectedTags: (tags: string[]) => void;
-}) {
+}>) {
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

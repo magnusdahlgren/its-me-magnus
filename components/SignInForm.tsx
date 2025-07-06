@@ -41,7 +41,7 @@ export function SignInForm({
       {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
 
       <label>
-        Email:
+        <span>Email:</span>
         <input
           type="email"
           value={email}
@@ -51,7 +51,7 @@ export function SignInForm({
       </label>
 
       <label>
-        Password:
+        <span>Password:</span>
         <input
           type="password"
           value={password}

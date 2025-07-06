@@ -48,6 +48,8 @@ export default function EditNoteModal() {
   useEffect(() => {
     if (!id) return;
 
+    const safeId = id as string;
+
     async function fetchNoteAndTags() {
       const { data: note, error: noteError } = await supabase
         .from("notes")
@@ -61,7 +63,7 @@ export default function EditNoteModal() {
         return;
       }
 
-      const tags = await getTagsForNote(id);
+      const tags = await getTagsForNote(safeId);
       const tagIds = tags.map((tag) => tag.id);
 
       setInitialData({
@@ -78,14 +80,7 @@ export default function EditNoteModal() {
 
   return (
     <div className={styles.modalBackdrop}>
-      <div
-        className={styles.modalContent}
-        onClick={(e) => e.stopPropagation()}
-        role="presentation"
-        tabIndex={-1}
-      >
-        {content}
-      </div>
+      <div className={styles.modalContent}>{content}</div>
     </div>
   );
 }

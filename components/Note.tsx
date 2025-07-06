@@ -1,7 +1,6 @@
 import { Note } from "@/types/note";
 import ReactMarkdown from "react-markdown";
 import { renderTagsForNote } from "@/lib/tags";
-import Link from "next/link";
 import { isAuthenticated } from "@/lib/auth";
 import { EditNoteLink } from "./EditNoteLink";
 

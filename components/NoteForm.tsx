@@ -123,7 +123,7 @@ export function NoteForm({
 
       // Insert new tags
       const tagInserts = tags.map((tagId) => ({
-        note_id: currentNoteId!,
+        note_id: currentNoteId,
         tag_id: tagId,
       }));
 
@@ -159,7 +159,7 @@ export function NoteForm({
               type="text"
               name="title"
               className={styles.titleInput}
-              value={form.title || ""}
+              value={form.title ?? ""}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="Note title"
             />
@@ -168,7 +168,7 @@ export function NoteForm({
               name="content"
               className={styles.contentInput}
               rows={0}
-              value={form.content || ""}
+              value={form.content ?? ""}
               onChange={(e) => setForm({ ...form, content: e.target.value })}
               placeholder="Note content"
             />
