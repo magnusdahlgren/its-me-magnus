@@ -86,7 +86,9 @@ summary,
 time,
 mark,
 audio,
-video {
+video,
+input,
+textarea {
   margin: 0;
   padding: 0;
   border: 0;
@@ -287,8 +289,15 @@ p.note--date {
   margin: 1rem 0 0 0;
 }
 
-p.note--tags {
+div.note--navigation {
   margin: 2rem 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem; /* optional, for spacing between tags and button */
+}
+
+p.note--tags {
   background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxnIHRyYW5zZm9ybT0ic2NhbGUoLTEsMSkgdHJhbnNsYXRlKC0yNTYsMCkiPjxwYXRoIGQ9Ik0xMjIuNywyNS45LDQyLDQyLDI1LjksMTIyLjdhOCw4LDAsMCwwLDIuMiw3LjJMMTIzLjUsMjM0LjNhNy45LDcuOSwwLDAsMCwxMS4zLDBsOTAuNS05MC41YTcuOSw3LjksMCwwLDAsMC0xMS4zTDEyOS45LDI4LjFBOCw4LDAsMCwwLDEyMi43LDI1LjlaIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiIvPjxjaXJjbGUgY3g9Ijg0IiBjeT0iODQiIHI9IjEyIi8+PC9nPjwvc3ZnPg==");
   background-repeat: no-repeat;
   background-position: left center;
@@ -342,4 +351,74 @@ article li.important a {
 
 article li.untagged a {
   font-style: italic;
+}
+
+/* ==================== */
+/* 5. Admin             */
+/* ==================== */
+
+.add-note {
+  display: block;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #333;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  width: fit-content;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxjaXJjbGUgY3g9IjEyOCIgY3k9IjEyOCIgZmlsbD0ibm9uZSIgcj0iOTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2Utd2lkdGg9IjE2Ii8+PGxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTYiIHgxPSI4OCIgeDI9IjE2OCIgeTE9IjEyOCIgeTI9IjEyOCIvPjxsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2IiB4MT0iMTI4IiB4Mj0iMTI4IiB5MT0iODgiIHkyPSIxNjgiLz48L3N2Zz4=");
+  background-repeat: no-repeat;
+  background-position: 1.5rem center;
+  background-size: 1.5rem;
+  padding-left: 4rem;
+  transition: background-color 0.3s ease;
+}
+
+.add-note:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Always show the icon */
+.edit-note {
+  display: inline-flex;
+  align-items: center;
+  color: #222;
+  font-size: 1.1rem;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.8rem;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Icon stays visible */
+.edit-note .icon {
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxwYXRoIGQ9Ik05Mi43LDIxNkg0OGE4LDgsMCwwLDEtOC04VjE2My4zYTcuOSw3LjksMCwwLDEsMi4zLTUuNmwxMjAtMTIwYTgsOCwwLDAsMSwxMS40LDBsNDQuNiw0NC42YTgsOCwwLDAsMSwwLDExLjRsLTEyMCwxMjBBNy45LDcuOSwwLDAsMSw5Mi43LDIxNloiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2Ii8+PGxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTYiIHgxPSIxMzYiIHgyPSIxOTIiIHkxPSI2NCIgeTI9IjEyMCIvPjxsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2IiB4MT0iMTY0IiB4Mj0iNjgiIHkxPSI5MiIgeTI9IjE4OCIvPjxsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2IiB4MT0iOTUuNSIgeDI9IjQwLjUiIHkxPSIyMTUuNSIgeTI9IjE2MC41Ii8+PC9zdmc+");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.edit-note:hover {
+  background: #f2f2f2;
+}
+
+/* Text initially hidden */
+.edit-note .text {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.3s ease, margin-left 0.3s ease;
+}
+
+/* Text appears on hover */
+.edit-note:hover .text {
+  color: #222;
+  max-width: 8rem;
+  margin-left: 0.25rem;
 }
