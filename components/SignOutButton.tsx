@@ -8,8 +8,12 @@ export function SignOutButton() {
   const router = useRouter();
 
   async function handleSignOut() {
-    await supabase.auth.signOut();
-    router.refresh(); // Update the UI
+    try {
+      await supabase.auth.signOut();
+      router.refresh();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   }
 
   return (

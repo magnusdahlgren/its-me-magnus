@@ -39,3 +39,8 @@
   cursor: pointer;
   z-index: 10;
 }
+
+.modalClose:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}

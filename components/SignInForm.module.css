@@ -47,6 +47,12 @@
   transition: background-color 0.2s ease;
 }
 
+.signInForm button:focus-visible {
+  background-color: #333;
+  outline: 2px solid #333;
+  outline-offset: 2px;
+}
+
 .signInForm button:hover:not(:disabled) {
   background-color: #333;
 }
