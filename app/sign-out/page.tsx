@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 export default function SignOutPage() {
@@ -14,7 +14,7 @@ export default function SignOutPage() {
       } catch (error) {
         console.error("Error signing out:", error);
       }
-      redirect("/p/start");
+      router.push("/p/start");
     }
 
     signOutAndRedirect();

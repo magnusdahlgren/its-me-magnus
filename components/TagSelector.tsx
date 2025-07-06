@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./TagSelector.module.css";
 import { supabase } from "@/lib/supabase";
-
-type Tag = {
-  id: string;
-  title: string;
-};
+import { Tag } from "@/types/tag";
 
 export function TagSelector({
   selectedTags,
@@ -26,7 +22,7 @@ export function TagSelector({
       setError(null);
       const { data, error } = await supabase
         .from("notes")
-        .select("id, title")
+        .select("id, title, is_important")
         .not("title", "is", null)
         .order("title", { ascending: true });
 
@@ -34,7 +30,14 @@ export function TagSelector({
         console.error("Error fetching tags:", error);
         setError("Failed to load tags");
       } else {
-        setAllTags(data || []);
+        const tags = (data || []).map((row) => ({
+          id: row.id,
+          title: row.title,
+          isImportant: row.is_important ?? false,
+          notesCount: 0, // not available here, so we set a fallback
+        }));
+
+        setAllTags(tags);
       }
       setIsLoading(false);
     }
