@@ -104,12 +104,6 @@ dialog {
 /* 2. Body / Typography */
 /* ==================== */
 
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
 body {
   font-family: "IBM Plex Serif", serif;
   font-weight: 400;
@@ -117,6 +111,9 @@ body {
   color: #222;
   background-color: #f9f9f9;
   margin-bottom: 7rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
@@ -154,7 +151,7 @@ a {
   color: #0077cc;
   text-decoration: underline;
   text-underline-offset: 0.2em;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: from-font;
 }
 a:hover {
   color: #005fa3;
