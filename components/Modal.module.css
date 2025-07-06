@@ -1,0 +1,41 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 0.5rem;
+  max-width: 800px;
+  max-height: 90vh;
+  padding: 2rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: white;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48bGluZSB4MT0iMjAwIiB5MT0iNTYiIHgyPSI1NiIgeTI9IjIwMCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGxpbmUgeDE9IjIwMCIgeTE9IjIwMCIgeDI9IjU2IiB5Mj0iNTYiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMTYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-size: 2.5rem;
+  background-position: center;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  z-index: 10;
+}

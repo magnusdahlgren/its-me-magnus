@@ -7,6 +7,7 @@ import { getTagsForNote } from "@/lib/tags";
 import styles from "@/components/NoteForm.module.css";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { Modal } from "@/components/Modal";
 
 export default function EditNoteModal() {
   const params = useParams();
@@ -79,8 +80,8 @@ export default function EditNoteModal() {
   }, [id]);
 
   return (
-    <div className={styles.modalBackdrop}>
+    <Modal>
       <div className={styles.modalContent}>{content}</div>
-    </div>
+    </Modal>
   );
 }

@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import styles from "./SignInForm.module.css"; // Assuming you have a CSS file for styling
+import { useRouter } from "next/navigation";
 
 export function SignInForm({
-  redirectTo = "/p/start",
+  onSuccess,
 }: Readonly<{
-  redirectTo?: string;
+  onSuccess?: () => void;
 }>) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,12 +31,13 @@ export function SignInForm({
     if (error) {
       setErrorMsg(error.message);
     } else {
-      router.push(redirectTo);
+      router.refresh();
+      onSuccess?.(); // Close modal
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="sign-in-form">
+    <form onSubmit={handleSubmit} className={styles.signInForm}>
       <h2>Sign In</h2>
 
       {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}

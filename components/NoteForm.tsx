@@ -144,58 +144,47 @@ export function NoteForm({
   }
 
   return (
-    <div className={styles.modalBackdrop}>
-      <div className={styles.modalContent}>
-        <button
-          type="button"
-          className={styles.modalClose}
-          aria-label="Close"
-          onClick={() => router.back()}
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.modalBody}>
+        <input
+          type="text"
+          name="title"
+          className={styles.titleInput}
+          value={form.title ?? ""}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          placeholder="Note title"
         />
-
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.modalBody}>
-            <input
-              type="text"
-              name="title"
-              className={styles.titleInput}
-              value={form.title ?? ""}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              placeholder="Note title"
-            />
-            <textarea
-              ref={textareaRef}
-              name="content"
-              className={styles.contentInput}
-              rows={0}
-              value={form.content ?? ""}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              placeholder="Note content"
-            />
-            <TagSelector selectedTags={tags} setSelectedTags={setTags} />
-          </div>
-
-          <div className={styles.modalFooter}>
-            {noteId ? (
-              <button
-                type="button"
-                className={styles.deleteButton}
-                disabled={isLoading}
-                onClick={handleDelete}
-              >
-                Delete Note
-              </button>
-            ) : null}
-            <button
-              type="submit"
-              className={styles.saveButton}
-              disabled={isLoading}
-            >
-              {noteId ? "Save Updates" : "Create Note"}
-            </button>
-          </div>
-        </form>
+        <textarea
+          ref={textareaRef}
+          name="content"
+          className={styles.contentInput}
+          rows={0}
+          value={form.content ?? ""}
+          onChange={(e) => setForm({ ...form, content: e.target.value })}
+          placeholder="Note content"
+        />
+        <TagSelector selectedTags={tags} setSelectedTags={setTags} />
       </div>
-    </div>
+
+      <div className={styles.modalFooter}>
+        {noteId ? (
+          <button
+            type="button"
+            className={styles.deleteButton}
+            disabled={isLoading}
+            onClick={handleDelete}
+          >
+            Delete Note
+          </button>
+        ) : null}
+        <button
+          type="submit"
+          className={styles.saveButton}
+          disabled={isLoading}
+        >
+          {noteId ? "Save Updates" : "Create Note"}
+        </button>
+      </div>
+    </form>
   );
 }

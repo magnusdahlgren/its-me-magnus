@@ -11,10 +11,11 @@ export default function SignOutPage() {
     async function signOutAndRedirect() {
       try {
         await supabase.auth.signOut();
+        router.refresh(); // Update server-rendered content
+        router.back(); // Close the modal (or go to previous page)
       } catch (error) {
         console.error("Error signing out:", error);
       }
-      router.push("/p/start");
     }
 
     signOutAndRedirect();
