@@ -47,3 +47,19 @@ and id not in (
   union
   select tag_id from notes_tags
 );
+
+create or replace view notes_with_tags as
+select
+  n.id as note_id,
+  n.title as note_title,
+  n.content as note_content,
+  n.image_url,
+  n.image_caption,
+  n.created_at,
+  n.updated_at,
+  t.id as tag_id,
+  t.title as tag_title,
+  t.is_important as tag_is_important
+from notes n
+left join notes_tags nt on nt.note_id = n.id
+left join notes t on t.id = nt.tag_id;
