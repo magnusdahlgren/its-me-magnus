@@ -236,7 +236,7 @@ article {
   padding: 3rem;
   border-radius: 1rem;
   background: #fff;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 article article {
@@ -290,13 +290,6 @@ article tbody tr + tr {
   font-size: 2.2rem;
 }
 
-p.note--date {
-  font-size: 1rem;
-  color: #999;
-  font-weight: 300;
-  margin: 1rem 0 0 0;
-}
-
 div.note--navigation {
   margin: 2rem 0 0 0;
   display: flex;
@@ -305,13 +298,59 @@ div.note--navigation {
   gap: 1rem; /* optional, for spacing between tags and button */
 }
 
+.note--footer {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+p.note--date {
+  font-size: 1rem;
+  color: #999;
+  font-weight: 300;
+  margin: 0;
+}
+
 p.note--tags {
   background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxnIHRyYW5zZm9ybT0ic2NhbGUoLTEsMSkgdHJhbnNsYXRlKC0yNTYsMCkiPjxwYXRoIGQ9Ik0xMjIuNywyNS45LDQyLDQyLDI1LjksMTIyLjdhOCw4LDAsMCwwLDIuMiw3LjJMMTIzLjUsMjM0LjNhNy45LDcuOSwwLDAsMCwxMS4zLDBsOTAuNS05MC41YTcuOSw3LjksMCwwLDAsMC0xMS4zTDEyOS45LDI4LjFBOCw4LDAsMCwwLDEyMi43LDI1LjlaIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiIvPjxjaXJjbGUgY3g9Ijg0IiBjeT0iODQiIHI9IjEyIi8+PC9nPjwvc3ZnPg==");
   background-repeat: no-repeat;
   background-position: left center;
   background-size: 1.5rem;
-  padding-left: 2rem;
-  font-size: inherit;
+  padding-left: 1.9rem;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  margin: 0;
+}
+
+p.note--tags a,
+p.note--read-more a {
+  text-decoration: none;
+}
+
+p.note--tags a:hover,
+p.note--read-more a:hover {
+  text-decoration: underline;
+}
+
+p.note--tags a:focus-visible,
+p.note--read-more a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+p.note--read-more a {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSg5MCAxMjggMTI4KSI+PHJlY3QgZmlsbD0ibm9uZSIgaGVpZ2h0PSIyNTYiIHdpZHRoPSIyNTYiLz48cGF0aCBkPSJNMTY4LDExMlYxMDBhMjAsMjAsMCwwLDAtNDAsMFYzNmEyMCwyMCwwLDAsMC00MCwwVjE1Ny4zbC0yMS45LTM4YTIwLDIwLDAsMCwwLTM0LjcsMjBDNjQsMjA4LDgzLjgsMjMyLDEyOCwyMzJhODAsODAsMCwwLDAsODAtODBWMTEyYTIwLDIwLDAsMCwwLTQwLDBaIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiIvPjwvZz48L3N2Zz4=");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 1.8rem;
+  padding-left: 2.2rem;
 }
 
 .note--tagged h2 {
@@ -398,6 +437,8 @@ article li.untagged a {
   padding: 0.5rem 0.8rem;
   text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Icon stays visible */

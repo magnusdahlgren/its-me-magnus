@@ -3,7 +3,6 @@ import { Tag } from "@/types/tag";
 import { Note } from "@/types/note";
 import { JSX } from "react";
 import Link from "next/link";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 export async function getTagsForNote(noteId: string): Promise<Tag[]> {
   const { data, error } = await supabase
@@ -21,24 +20,50 @@ export async function getTagsForNote(noteId: string): Promise<Tag[]> {
 
 export async function getNotesForTag(tagId: string): Promise<Note[]> {
   if (tagId === "_untagged") {
-    const { data, error } = await supabase
-      .from("untagged_notes") // your saved view
-      .select("*");
+    const { data, error } = await supabase.from("untagged_notes").select("*");
 
     if (error || !data) return [];
     return data as Note[];
   }
 
-  const { data, error } = (await supabase
-    .from("notes_tags")
-    .select(
-      "note:note_id(id, title, content, image_url, image_caption, created_at, updated_at)"
-    )
-    .eq("tag_id", tagId)) as PostgrestSingleResponse<{ note: Note }[]>;
+  // Fetch notes with their tags where tag_id matches
+  const { data, error } = await supabase
+    .from("notes_with_tags")
+    .select("*")
+    .eq("tag_id", tagId);
 
   if (error || !data) return [];
 
-  return data.map((entry) => entry.note);
+  // Group rows by note_id
+  const notesById = new Map<string, Note>();
+
+  for (const row of data) {
+    if (!notesById.has(row.note_id)) {
+      notesById.set(row.note_id, {
+        id: row.note_id,
+        title: row.note_title,
+        content: row.note_content,
+        image_url: row.image_url,
+        image_caption: row.image_caption,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        is_tag: row.is_tag,
+        tags: [],
+      });
+    }
+
+    if (row.tag_id) {
+      const tag: Tag = {
+        id: row.tag_id,
+        title: row.tag_title,
+        isImportant: row.tag_is_important,
+        notesCount: -1, // not needed here
+      };
+      notesById.get(row.note_id)?.tags.push(tag);
+    }
+  }
+
+  return Array.from(notesById.values());
 }
 
 export async function getAllTags(): Promise<Tag[]> {
