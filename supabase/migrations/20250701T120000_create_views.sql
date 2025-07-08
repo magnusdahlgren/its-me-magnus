@@ -59,7 +59,13 @@ select
   n.updated_at,
   t.id as tag_id,
   t.title as tag_title,
-  t.is_important as tag_is_important
+  t.is_important as tag_is_important,
+  exists (
+    select 1
+    from notes_tags nt
+    where nt.tag_id = n.id
+    limit 1
+  ) as is_tag
 from notes n
 left join notes_tags nt on nt.note_id = n.id
 left join notes t on t.id = nt.tag_id;

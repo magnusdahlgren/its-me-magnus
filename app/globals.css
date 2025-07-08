@@ -339,6 +339,12 @@ p.note--read-more a:hover {
   text-decoration: underline;
 }
 
+p.note--tags a:focus-visible,
+p.note--read-more a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 p.note--read-more a {
   background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSg5MCAxMjggMTI4KSI+PHJlY3QgZmlsbD0ibm9uZSIgaGVpZ2h0PSIyNTYiIHdpZHRoPSIyNTYiLz48cGF0aCBkPSJNMTY4LDExMlYxMDBhMjAsMjAsMCwwLDAtNDAsMFYzNmEyMCwyMCwwLDAsMC00MCwwVjE1Ny4zbC0yMS45LTM4YTIwLDIwLDAsMCwwLTM0LjcsMjBDNjQsMjA4LDgzLjgsMjMyLDEyOCwyMzJhODAsODAsMCwwLDAsODAtODBWMTEyYTIwLDIwLDAsMCwwLTQwLDBaIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxNiIvPjwvZz48L3N2Zz4=");
   background-repeat: no-repeat;
