@@ -25,22 +25,33 @@ export function NoteForm({
   defaultTagId?: string;
 }>) {
   const router = useRouter();
-  const [form, setForm] = useState(initialData || {});
+
+  const [form, setForm] = useState<{
+    title?: string | null;
+    content?: string | null;
+    image_url?: string | null;
+    image_caption?: string | null;
+    tags?: string[];
+  }>(initialData || {});
+
   const [tags, setTags] = useState<string[]>(
     initialData?.tags || (defaultTagId ? [defaultTagId] : [])
   );
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [imageWasRemoved, setImageWasRemoved] = useState(false);
   const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
 
-  const [imageBlobToUpload, setImageBlobToUpload] = useState<File | null>(null);
-  const [imageWasRemoved, setImageWasRemoved] = useState(false);
-  const [imageWasAdded, setImageWasAdded] = useState(false);
   const [oldImageFilename, setOldImageFilename] = useState(
     initialData?.image_url ?? null
   );
 
-  const handleImageChange = (file: File | null) => {};
+  const handleImageChange = (file: File | null) => {
+    if (!file) {
+      setImageWasRemoved(true);
+      setForm((prev) => ({ ...prev, image_url: null }));
+    }
+  };
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -87,6 +98,11 @@ export function NoteForm({
       console.log("Updating note with form data:", form);
 
       const { tags: _ignored, ...noteData } = form;
+
+      // Explicitly null out image_url if removed
+      if (imageWasRemoved) {
+        noteData.image_url = null;
+      }
 
       const { error } = await supabase
         .from("notes")
@@ -154,13 +170,18 @@ export function NoteForm({
     // 3. Handle image updates
 
     if (imageWasRemoved && oldImageFilename) {
-      console.log("Removing from supabase: " + oldImageFilename);
-      await supabase.storage
-        .from("images")
-        .remove([oldImageFilename])
-        .catch(() => {});
-    }
+      console.log("Attempting to remove image:", oldImageFilename);
+      const { error: removeError } = await supabase.storage
+        .from("images-dev")
+        .remove([oldImageFilename]);
 
+      if (removeError) {
+        console.error(
+          "Failed to delete image from bucket:",
+          removeError.message
+        );
+      }
+    }
     // 4. Redirect
     router.push(`/p/${currentNoteId}`);
   }
@@ -176,11 +197,12 @@ export function NoteForm({
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           placeholder="Note title"
         />
+
         <ImageSelector
           onChange={handleImageChange}
-          initialImageUrl={initialData?.image_url ?? ""}
+          initialImageUrl={form.image_url ?? ""}
         />
-        .
+
         <textarea
           ref={textareaRef}
           name="content"
