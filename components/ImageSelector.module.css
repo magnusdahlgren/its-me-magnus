@@ -1,0 +1,49 @@
+.imageSelector {
+  margin-left: 0.5rem;
+}
+
+button.addImageButton {
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGc+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMSAxNXYzaDN2MmgtM3YzaC0ydi0zaC0zdi0yaDN2LTNoMnptLjAwOC0xMmMuNTQ4IDAgLjk5Mi40NDUuOTkyLjk5M1YxM2gtMlY1SDR2MTMuOTk5TDE0IDlsMyAzdjIuODI5bC0zLTNMNi44MjcgMTlIMTR2MkgyLjk5MkEuOTkzLjk5MyAwIDAgMSAyIDIwLjAwN1YzLjk5M0ExIDEgMCAwIDEgMi45OTIgM2gxOC4wMTZ6TTggN2EyIDIgMCAxIDEgMCA0IDIgMiAwIDAgMSAwLTR6Ii8+PC9nPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: 0.3rem center;
+  padding: 0.3rem 0.3rem 0.3rem 2.3rem;
+  background-size: 1.5rem;
+  opacity: 0.5;
+  cursor: pointer;
+  border: 2px dashed #222;
+}
+
+button.addImageButton:hover {
+  opacity: 1;
+}
+
+button.removeImageButton {
+  position: relative;
+  cursor: pointer;
+}
+
+button.removeImageButton .trashOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU2IDI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCBmaWxsPSJub25lIiBoZWlnaHQ9IjI1NiIgd2lkdGg9IjI1NiIvPjxsaW5lIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2IiB4MT0iMjAwIiB4Mj0iNTYiIHkxPSI1NiIgeTI9IjIwMCIvPjxsaW5lIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjE2IiB4MT0iMjAwIiB4Mj0iNTYiIHkxPSIyMDAiIHkyPSI1NiIvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 5rem;
+  width: 7rem;
+  height: 7rem;
+}
+
+/* On hover, show overlay */
+button.removeImageButton:hover .trashOverlay {
+  opacity: 1;
+}
+img.imagePreview {
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}

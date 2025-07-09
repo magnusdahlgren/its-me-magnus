@@ -40,7 +40,20 @@ export function NoteForm({
     initialData?.image_url ?? null
   );
 
-  const handleImageChange = (file: File | null) => {};
+  const handleImageChange = (file: File | null) => {
+    if (file) {
+      setImageBlobToUpload(file);
+      setImageWasAdded(true);
+
+      if (oldImageFilename) {
+        setImageWasRemoved(true);
+      }
+    } else {
+      setImageWasRemoved(true);
+      setImageWasAdded(false);
+      setImageBlobToUpload(null);
+    }
+  };
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -86,6 +99,12 @@ export function NoteForm({
     if (noteId) {
       console.log("Updating note with form data:", form);
 
+      if (newImageFile) {
+        noteData.image_url = getImageFileName(noteId);
+      } else if (imageWasRemoved) {
+        noteData.image_url = undefined;
+      }
+
       const { tags: _ignored, ...noteData } = form;
 
       const { error } = await supabase
@@ -96,10 +115,20 @@ export function NoteForm({
         console.error("Error updating note:", error);
         return;
       }
+
+      if (imageWasRemoved && existingImageUrl) {
+        await supabase.storage
+          .from("images")
+          .remove([existingImageUrl])
+          .catch(() => {}); // ignore errors
+      }
     } else {
       console.log("Inserting note with form data:", form);
 
       const newNoteId = generateNoteId();
+      if (newImageFile) {
+        newImageFilename = getImageFileName(newNoteId);
+      }
 
       const newNote = {
         id: newNoteId,
@@ -151,14 +180,25 @@ export function NoteForm({
       }
     }
 
-    // 3. Handle image updates
+    let newImageFilename = oldImageFilename;
 
     if (imageWasRemoved && oldImageFilename) {
-      console.log("Removing from supabase: " + oldImageFilename);
       await supabase.storage
         .from("images")
         .remove([oldImageFilename])
         .catch(() => {});
+    }
+
+    if (imageWasAdded && imageBlobToUpload) {
+      newImageFilename = getImageFileName(noteId);
+      await supabase.storage
+        .from("images")
+        .upload(newImageFilename, imageBlobToUpload, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+    } else if (imageWasRemoved && !imageWasAdded) {
+      newImageFilename = null;
     }
 
     // 4. Redirect
@@ -176,11 +216,7 @@ export function NoteForm({
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           placeholder="Note title"
         />
-        <ImageSelector
-          onChange={handleImageChange}
-          initialImageUrl={initialData?.image_url ?? ""}
-        />
-        .
+        <ImageSelector onChange={handleImageChange} />.
         <textarea
           ref={textareaRef}
           name="content"
