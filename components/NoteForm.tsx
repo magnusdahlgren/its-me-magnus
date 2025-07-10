@@ -7,7 +7,7 @@ import styles from "./NoteForm.module.css";
 import { TagSelector } from "./TagSelector";
 import { generateNoteId } from "@/lib/notes";
 import { ImageSelector } from "./ImageSelector";
-import { deleteImage, getImageFileName } from "@/lib/images";
+import { deleteImage, getImageFileName, uploadImage } from "@/lib/images";
 
 export function NoteForm({
   initialData,
@@ -51,9 +51,11 @@ export function NoteForm({
     if (!file) {
       setImageWasRemoved(true);
       setImageWasAdded(false);
+      setNewImageFile(null);
       setForm((prev) => ({ ...prev, image_url: null }));
     } else {
       setImageWasAdded(true);
+      setNewImageFile(file);
     }
   };
 
@@ -188,9 +190,11 @@ export function NoteForm({
       deleteImage(oldImageFilename);
     }
 
-    if (imageWasAdded) {
-      if (currentNoteId) {
-        const newImageFilename = getImageFileName(currentNoteId);
+    if (imageWasAdded && newImageFile && imageUrl) {
+      const result = await uploadImage(newImageFile, imageUrl);
+      if (!result.success) {
+        console.error("Image upload failed:", result.error);
+        return;
       }
     }
 
