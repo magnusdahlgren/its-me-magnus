@@ -7,7 +7,7 @@ import styles from "./NoteForm.module.css";
 import { TagSelector } from "./TagSelector";
 import { generateNoteId } from "@/lib/notes";
 import { ImageSelector } from "./ImageSelector";
-import { getImageFileName } from "@/lib/images";
+import { deleteImage, getImageFileName } from "@/lib/images";
 
 export function NoteForm({
   initialData,
@@ -40,6 +40,7 @@ export function NoteForm({
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [imageWasRemoved, setImageWasRemoved] = useState(false);
+  const [imageWasAdded, setImageWasAdded] = useState(false);
   const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
 
   const [oldImageFilename, setOldImageFilename] = useState(
@@ -49,7 +50,10 @@ export function NoteForm({
   const handleImageChange = (file: File | null) => {
     if (!file) {
       setImageWasRemoved(true);
+      setImageWasAdded(false);
       setForm((prev) => ({ ...prev, image_url: null }));
+    } else {
+      setImageWasAdded(true);
     }
   };
 
@@ -91,18 +95,30 @@ export function NoteForm({
     if (isLoading) return;
     setIsLoading(true);
 
-    let currentNoteId = noteId;
+    const noteAlreadyExists = !!noteId;
+    let currentNoteId;
+    let imageUrl;
+
+    if (noteId) {
+      currentNoteId = noteId;
+    } else {
+      currentNoteId = generateNoteId();
+    }
+
+    if (imageWasAdded) {
+      imageUrl = getImageFileName(currentNoteId);
+    } else if (imageWasRemoved) {
+      imageUrl = null;
+    }
 
     // 1. Insert or update the note
-    if (noteId) {
-      console.log("Updating note with form data:", form);
 
+    if (noteAlreadyExists) {
       const { tags: _ignored, ...noteData } = form;
 
-      // Explicitly null out image_url if removed
-      if (imageWasRemoved) {
-        noteData.image_url = null;
-      }
+      noteData.image_url = imageUrl;
+
+      console.log("Updating note with form data:", noteData);
 
       const { error } = await supabase
         .from("notes")
@@ -113,14 +129,13 @@ export function NoteForm({
         return;
       }
     } else {
-      console.log("Inserting note with form data:", form);
-
-      const newNoteId = generateNoteId();
-
       const newNote = {
-        id: newNoteId,
+        id: currentNoteId,
+        image_url: imageUrl,
         ...form,
       };
+
+      console.log("Inserting note with form data:", newNote);
 
       const { data, error } = await supabase
         .from("notes")
@@ -132,21 +147,21 @@ export function NoteForm({
         console.error("Error inserting note:", error);
         return;
       }
-
-      currentNoteId = data.id;
     }
 
     // 2. Sync tags in notes_tags
     if (currentNoteId) {
-      // Remove existing tags
-      const { error: deleteError } = await supabase
-        .from("notes_tags")
-        .delete()
-        .eq("note_id", currentNoteId);
+      if (noteAlreadyExists) {
+        // Remove existing tags
+        const { error: deleteError } = await supabase
+          .from("notes_tags")
+          .delete()
+          .eq("note_id", currentNoteId);
 
-      if (deleteError) {
-        console.error("Error clearing existing tags:", deleteError);
-        return;
+        if (deleteError) {
+          console.error("Error clearing existing tags:", deleteError);
+          return;
+        }
       }
 
       // Insert new tags
@@ -170,18 +185,15 @@ export function NoteForm({
     // 3. Handle image updates
 
     if (imageWasRemoved && oldImageFilename) {
-      console.log("Attempting to remove image:", oldImageFilename);
-      const { error: removeError } = await supabase.storage
-        .from("images-dev")
-        .remove([oldImageFilename]);
+      deleteImage(oldImageFilename);
+    }
 
-      if (removeError) {
-        console.error(
-          "Failed to delete image from bucket:",
-          removeError.message
-        );
+    if (imageWasAdded) {
+      if (currentNoteId) {
+        const newImageFilename = getImageFileName(currentNoteId);
       }
     }
+
     // 4. Redirect
     router.push(`/p/${currentNoteId}`);
   }
