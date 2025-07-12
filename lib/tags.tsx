@@ -99,3 +99,41 @@ export async function renderTagsForNote(
     </p>
   );
 }
+
+export async function deleteTagsForNote(noteId: string) {
+  // Remove tags associated with this note
+  await supabase.from("notes_tags").delete().eq("note_id", noteId);
+
+  // Remove this tag from other notes
+  await supabase.from("notes_tags").delete().eq("tag_id", noteId);
+}
+
+export async function updateTagsForNote(noteId: string, tags: string[]) {
+  // 1. Remove existing tags
+  const { error: deleteError } = await supabase
+    .from("notes_tags")
+    .delete()
+    .eq("note_id", noteId);
+
+  if (deleteError) {
+    console.error("Error clearing existing tags:", deleteError);
+    return;
+  }
+
+  // 2. Add new tags
+  if (tags.length > 0) {
+    const tagsToAdd = tags.map((tagId) => ({
+      note_id: noteId,
+      tag_id: tagId,
+    }));
+
+    const { error: insertError } = await supabase
+      .from("notes_tags")
+      .insert(tagsToAdd);
+
+    if (insertError) {
+      console.error("Error inserting tags:", insertError);
+      return;
+    }
+  }
+}

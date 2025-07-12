@@ -15,10 +15,10 @@ export default function EditNoteModal() {
   const [error, setError] = useState<string | null>(null);
 
   const [initialData, setInitialData] = useState<null | {
-    title?: string;
-    content?: string;
-    image_url?: string;
-    image_caption?: string;
+    title: string | null;
+    content: string | null;
+    image_url: string | null;
+    image_caption: string | null;
     tags: string[];
   }>(null);
 
@@ -68,10 +68,10 @@ export default function EditNoteModal() {
       const tagIds = tags.map((tag) => tag.id);
 
       setInitialData({
-        title: note.title ?? "",
-        content: note.content ?? "",
-        image_url: note.image_url ?? "",
-        image_caption: note.image_caption ?? "",
+        title: note.title,
+        content: note.content,
+        image_url: note.image_url,
+        image_caption: note.image_caption,
         tags: tagIds,
       });
     }

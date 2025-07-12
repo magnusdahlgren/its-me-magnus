@@ -27,14 +27,16 @@ export async function uploadImage(
   filename: string,
   bucket = "images-dev"
 ): Promise<{ success: boolean; error?: string }> {
+  console.log("Uploading image...");
   const { error } = await supabase.storage.from(bucket).upload(filename, file, {
     cacheControl: "3600",
     upsert: true,
   });
 
   if (error) {
+    console.error("Error uploading image:", error.message);
     return { success: false, error: error.message };
   }
-
+  console.log("Image upload done!");
   return { success: true };
 }

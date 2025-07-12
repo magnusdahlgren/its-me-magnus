@@ -6,10 +6,10 @@ import { getFullImageUrl } from "@/lib/images";
 export function ImageSelector({
   initialImageUrl,
   onChange,
-}: {
+}: Readonly<{
   initialImageUrl: string;
   onChange: (file: File | null) => void;
-}) {
+}>) {
   const [previewUrl, setPreviewUrl] = useState(initialImageUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const computedSrc = previewUrl.startsWith("blob:")
