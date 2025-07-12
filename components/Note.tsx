@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { renderTagsForNote } from "@/lib/tags";
 import { EditNoteLink } from "./EditNoteLink";
 import Link from "next/link";
+import { getFullImageUrl } from "@/lib/images";
 
 interface Props {
   note: Note;
@@ -17,7 +18,10 @@ export async function NoteView({ note }: Readonly<Props>) {
 
       {note.image_url && (
         <figure>
-          <img src={note.image_url} alt={note.image_caption ?? ""} />
+          <img
+            src={getFullImageUrl(note.image_url)}
+            alt={note.image_caption ?? ""}
+          />
           {note.image_caption && <figcaption>{note.image_caption}</figcaption>}
         </figure>
       )}

@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import styles from "./NoteForm.module.css";
 import { TagSelector } from "./TagSelector";
-import { generateNoteId } from "@/lib/notes";
+import { generateNoteId, updateNote, insertNote } from "@/lib/notes";
+import { ImageSelector } from "./ImageSelector";
+import { deleteImage, getImageFileName, uploadImage } from "@/lib/images";
+import { deleteTagsForNote, updateTagsForNote } from "@/lib/tags";
 
 export function NoteForm({
   initialData,
@@ -13,22 +16,52 @@ export function NoteForm({
   defaultTagId,
 }: Readonly<{
   initialData?: {
-    title?: string;
-    content?: string;
-    image_url?: string;
-    image_caption?: string;
+    title: string | null;
+    content: string | null;
+    image_url: string | null;
+    image_caption: string | null;
     tags?: string[];
   };
   noteId?: string;
   defaultTagId?: string;
 }>) {
   const router = useRouter();
-  const [form, setForm] = useState(initialData || {});
+
+  const [form, setForm] = useState<{
+    title: string | null;
+    content: string | null;
+    image_url: string | null;
+    image_caption: string | null;
+    tags?: string[];
+  }>({
+    title: initialData?.title ?? null,
+    content: initialData?.content ?? null,
+    image_url: initialData?.image_url ?? null,
+    image_caption: initialData?.image_caption ?? null,
+    tags: initialData?.tags ?? [],
+  });
+
   const [tags, setTags] = useState<string[]>(
     initialData?.tags || (defaultTagId ? [defaultTagId] : [])
   );
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [imageWasRemoved, setImageWasRemoved] = useState(false);
+  const [imageWasAdded, setImageWasAdded] = useState(false);
+  const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
+  const oldImageFilename = initialData?.image_url;
+
+  const handleImageChange = (file: File | null) => {
+    if (!file) {
+      setImageWasRemoved(true);
+      setImageWasAdded(false);
+      setNewImageFile(null);
+      setForm((prev) => ({ ...prev, image_url: null }));
+    } else {
+      setImageWasAdded(true);
+      setNewImageFile(file);
+    }
+  };
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -50,8 +83,7 @@ export function NoteForm({
     if (!confirmed) return;
 
     setIsLoading(true);
-    await supabase.from("notes_tags").delete().eq("note_id", noteId); // Remove tags associated with this note
-    await supabase.from("notes_tags").delete().eq("tag_id", noteId); // Remove this tag from other notes
+    await deleteTagsForNote(noteId);
 
     const { error } = await supabase.from("notes").delete().eq("id", noteId);
 
@@ -60,7 +92,12 @@ export function NoteForm({
       return;
     }
 
-    router.push("/p/start"); // or any fallback page
+    router.push("/p/start");
+  }
+
+  function buildNoteData(form: typeof initialData, imageUrl: string | null) {
+    const { tags: _ignored, ...noteData } = form || {};
+    return { ...noteData, image_url: imageUrl };
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -68,78 +105,40 @@ export function NoteForm({
     if (isLoading) return;
     setIsLoading(true);
 
-    let currentNoteId = noteId;
+    // 1. Determine note id and image filename
+    const noteAlreadyExists = !!noteId;
+    const currentNoteId = noteAlreadyExists ? noteId : generateNoteId();
+    let imageUrl: string | null;
 
-    // 1. Insert or update the note
-    if (noteId) {
-      console.log("Updating note with form data:", form);
-
-      const { tags: _ignored, ...noteData } = form;
-
-      const { error } = await supabase
-        .from("notes")
-        .update(noteData)
-        .eq("id", noteId);
-      if (error) {
-        console.error("Error updating note:", error);
-        return;
-      }
+    if (imageWasAdded) {
+      imageUrl = `${getImageFileName(currentNoteId)}?t=${Date.now()}`; // bust cache
+    } else if (imageWasRemoved) {
+      imageUrl = null;
     } else {
-      console.log("Inserting note with form data:", form);
+      imageUrl = form.image_url;
+    }
+    const noteData = buildNoteData(form, imageUrl);
 
-      const newNoteId = generateNoteId();
-
-      const newNote = {
-        id: newNoteId,
-        ...form,
-      };
-
-      const { data, error } = await supabase
-        .from("notes")
-        .insert([newNote])
-        .select()
-        .single();
-
-      if (error) {
-        console.error("Error inserting note:", error);
-        return;
-      }
-
-      currentNoteId = data.id;
+    // 2. Insert or update note in db
+    if (noteAlreadyExists) {
+      await updateNote(currentNoteId, noteData);
+    } else {
+      await insertNote(currentNoteId, noteData);
     }
 
-    // 2. Sync tags in notes_tags
-    if (currentNoteId) {
-      // Remove existing tags
-      const { error: deleteError } = await supabase
-        .from("notes_tags")
-        .delete()
-        .eq("note_id", currentNoteId);
+    // 3. Update tags
+    await updateTagsForNote(currentNoteId, tags);
 
-      if (deleteError) {
-        console.error("Error clearing existing tags:", deleteError);
-        return;
-      }
-
-      // Insert new tags
-      const tagInserts = tags.map((tagId) => ({
-        note_id: currentNoteId,
-        tag_id: tagId,
-      }));
-
-      if (tagInserts.length > 0) {
-        const { error: insertError } = await supabase
-          .from("notes_tags")
-          .insert(tagInserts);
-
-        if (insertError) {
-          console.error("Error inserting tags:", insertError);
-          return;
-        }
-      }
+    // 4. Image clean up and upload
+    if (imageWasRemoved && oldImageFilename) {
+      deleteImage(oldImageFilename);
     }
 
-    // 3. Redirect
+    if (imageWasAdded && newImageFile && imageUrl) {
+      await uploadImage(newImageFile, imageUrl);
+    }
+
+    // 5. Redirect
     router.push(`/p/${currentNoteId}`);
   }
 
@@ -154,6 +153,12 @@ export function NoteForm({
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           placeholder="Note title"
         />
+
+        <ImageSelector
+          onChange={handleImageChange}
+          initialImageUrl={form.image_url ?? ""}
+        />
+
         <textarea
           ref={textareaRef}
           name="content"
