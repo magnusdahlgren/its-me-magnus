@@ -105,26 +105,31 @@ export function NoteForm({
     if (isLoading) return;
     setIsLoading(true);
 
+    // 1. Determine note id and image filename
     const noteAlreadyExists = !!noteId;
     const currentNoteId = noteAlreadyExists ? noteId : generateNoteId();
-    let imageUrl: string | null = form.image_url ?? null;
+    let imageUrl: string | null;
 
     if (imageWasAdded) {
       imageUrl = `${getImageFileName(currentNoteId)}?t=${Date.now()}`; // bust cache
     } else if (imageWasRemoved) {
       imageUrl = null;
+    } else {
+      imageUrl = form.image_url;
     }
-
     const noteData = buildNoteData(form, imageUrl);
 
+    // 2. Insert or update note in db
     if (noteAlreadyExists) {
       await updateNote(currentNoteId, noteData);
     } else {
       await insertNote(currentNoteId, noteData);
     }
 
+    // 3. Update tags
     await updateTagsForNote(currentNoteId, tags);
 
+    // 4. Image clean up and upload
     if (imageWasRemoved && oldImageFilename) {
       deleteImage(oldImageFilename);
     }
@@ -133,6 +138,7 @@ export function NoteForm({
       await uploadImage(newImageFile, imageUrl);
     }
 
+    // 5. Redirect
     router.push(`/p/${currentNoteId}`);
   }
 
