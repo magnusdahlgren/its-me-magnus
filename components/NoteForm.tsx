@@ -83,7 +83,7 @@ export function NoteForm({
     if (!confirmed) return;
 
     setIsLoading(true);
-    deleteTagsForNote(noteId);
+    await deleteTagsForNote(noteId);
 
     const { error } = await supabase.from("notes").delete().eq("id", noteId);
 
