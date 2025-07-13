@@ -22,7 +22,14 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   if (tagId === "_untagged") {
     const { data, error } = await supabase.from("untagged_notes").select("*");
 
-    if (error || !data) return [];
+    if (error) {
+      console.error(
+        "Supabase error in getNotesForTag:",
+        error.message,
+        error.details || error.hint || error
+      );
+      return [];
+    }
     return data as Note[];
   }
 
@@ -30,9 +37,17 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   const { data, error } = await supabase
     .from("notes_with_tags")
     .select("*")
-    .eq("tag_id", tagId);
+    .eq("tag_id", tagId)
+    .order("sort_index", { ascending: true });
 
-  if (error || !data) return [];
+  if (error) {
+    console.error(
+      "Supabase error in getNotesForTag:",
+      error.message,
+      error.details || error.hint || error
+    );
+    return [];
+  }
 
   // Group rows by note_id
   const notesById = new Map<string, Note>();

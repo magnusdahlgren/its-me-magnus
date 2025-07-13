@@ -1,19 +1,32 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import styles from "./NoteSettingsMenu.module.css";
+
+type FormType = {
+  title: string | null;
+  content: string | null;
+  image_url: string | null;
+  is_important: boolean | null;
+  is_private: boolean | null;
+  use_as_tag: boolean | null;
+  sort_index: number | null;
+  tags?: string[];
+};
 
 export function NoteSettingsMenu({
   isLoading,
   onDelete,
-}: {
+  form,
+  setForm,
+  isOpen,
+  setIsOpen,
+}: Readonly<{
   isLoading: boolean;
   onDelete: () => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isImportant, setIsImportant] = useState(false);
-  const [isPrivate, setIsPrivate] = useState(false);
-  const [useAsTag, setUseAsTag] = useState(false);
-  const [sortIndex, setSortIndex] = useState("");
-
+  form: FormType;
+  setForm: React.Dispatch<React.SetStateAction<FormType>>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}>) {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
@@ -34,23 +47,20 @@ export function NoteSettingsMenu({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [setIsOpen]);
 
   const checkboxOptions = [
     {
       label: "Important",
-      value: isImportant,
-      setter: setIsImportant,
+      key: "is_important" as const,
     },
     {
       label: "Use as tag",
-      value: useAsTag,
-      setter: setUseAsTag,
+      key: "use_as_tag" as const,
     },
     {
       label: "Private note",
-      value: isPrivate,
-      setter: setIsPrivate,
+      key: "is_private" as const,
     },
   ];
 
@@ -70,7 +80,7 @@ export function NoteSettingsMenu({
           <div className={styles.menuGrid}>
             {checkboxOptions.map((opt, index) => (
               <label
-                key={opt.label}
+                key={opt.key}
                 className={`${styles.menuRowBox} ${
                   index === 0 ? styles.menuRowBoxFirst : ""
                 }`}
@@ -78,8 +88,13 @@ export function NoteSettingsMenu({
                 <span className={styles.labelText}>{opt.label}</span>
                 <input
                   type="checkbox"
-                  checked={opt.value}
-                  onChange={() => opt.setter((v) => !v)}
+                  checked={!!form[opt.key]}
+                  onChange={() =>
+                    setForm((prev) => ({
+                      ...prev,
+                      [opt.key]: !prev[opt.key],
+                    }))
+                  }
                   className={styles.checkbox}
                 />
               </label>
@@ -90,8 +105,14 @@ export function NoteSettingsMenu({
                 <span className={styles.labelText}>Sort index</span>
                 <input
                   type="number"
-                  value={sortIndex}
-                  onChange={(e) => setSortIndex(e.target.value)}
+                  value={form.sort_index ?? ""}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      sort_index:
+                        e.target.value === "" ? null : Number(e.target.value),
+                    }))
+                  }
                   className={styles.sortInput}
                 />
               </div>

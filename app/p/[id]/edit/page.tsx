@@ -18,6 +18,10 @@ export default function EditNoteModal() {
     title: string | null;
     content: string | null;
     image_url: string | null;
+    is_important: boolean | null;
+    is_private: boolean | null;
+    use_as_tag: boolean | null;
+    sort_index: number | null;
     tags: string[];
   }>(null);
 
@@ -53,7 +57,9 @@ export default function EditNoteModal() {
     async function fetchNoteAndTags() {
       const { data: note, error: noteError } = await supabase
         .from("notes")
-        .select("id, title, content, image_url")
+        .select(
+          "id, title, content, image_url, is_important, is_private, use_as_tag, sort_index"
+        )
         .eq("id", id)
         .single();
 
@@ -70,6 +76,10 @@ export default function EditNoteModal() {
         title: note.title,
         content: note.content,
         image_url: note.image_url,
+        is_important: note.is_important,
+        is_private: note.is_private,
+        use_as_tag: note.use_as_tag,
+        sort_index: note.sort_index,
         tags: tagIds,
       });
     }

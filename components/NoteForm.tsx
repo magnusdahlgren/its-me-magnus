@@ -20,6 +20,10 @@ export function NoteForm({
     title: string | null;
     content: string | null;
     image_url: string | null;
+    is_important: boolean | null;
+    is_private: boolean | null;
+    use_as_tag: boolean | null;
+    sort_index: number | null;
     tags?: string[];
   };
   noteId?: string;
@@ -31,11 +35,19 @@ export function NoteForm({
     title: string | null;
     content: string | null;
     image_url: string | null;
+    is_important: boolean | null;
+    is_private: boolean | null;
+    use_as_tag: boolean | null;
+    sort_index: number | null;
     tags?: string[];
   }>({
     title: initialData?.title ?? null,
     content: initialData?.content ?? null,
     image_url: initialData?.image_url ?? null,
+    is_important: initialData?.is_important ?? null,
+    is_private: initialData?.is_private ?? null,
+    use_as_tag: initialData?.use_as_tag ?? null,
+    sort_index: initialData?.sort_index ?? null,
     tags: initialData?.tags ?? [],
   });
 
@@ -47,6 +59,7 @@ export function NoteForm({
   const [imageWasRemoved, setImageWasRemoved] = useState(false);
   const [imageWasAdded, setImageWasAdded] = useState(false);
   const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const oldImageFilename = initialData?.image_url;
 
   const handleImageChange = (file: File | null) => {
@@ -173,9 +186,11 @@ export function NoteForm({
         <NoteSettingsMenu
           isLoading={isLoading}
           onDelete={handleDelete}
-          // You can pass these as props later:
-          // isImportant, setIsImportant, etc.
-        />{" "}
+          form={form}
+          setForm={setForm}
+          isOpen={settingsOpen}
+          setIsOpen={setSettingsOpen}
+        />
         <button
           type="submit"
           className={styles.saveButton}
