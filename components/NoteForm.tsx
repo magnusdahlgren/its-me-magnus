@@ -9,6 +9,7 @@ import { generateNoteId, updateNote, insertNote } from "@/lib/notes";
 import { ImageSelector } from "./ImageSelector";
 import { deleteImage, getImageFileName, uploadImage } from "@/lib/images";
 import { deleteTagsForNote, updateTagsForNote } from "@/lib/tags";
+import { NoteSettingsMenu } from "./NoteSettingsMenu";
 
 export function NoteForm({
   initialData,
@@ -172,16 +173,12 @@ export function NoteForm({
       </div>
 
       <div className={styles.modalFooter}>
-        {noteId ? (
-          <button
-            type="button"
-            className={styles.deleteButton}
-            disabled={isLoading}
-            onClick={handleDelete}
-          >
-            Delete Note
-          </button>
-        ) : null}
+        <NoteSettingsMenu
+          isLoading={isLoading}
+          onDelete={handleDelete}
+          // You can pass these as props later:
+          // isImportant, setIsImportant, etc.
+        />{" "}
         <button
           type="submit"
           className={styles.saveButton}

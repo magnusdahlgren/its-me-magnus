@@ -10,7 +10,8 @@ interface Props {
 }
 
 export async function NoteView({ note }: Readonly<Props>) {
-  const isShort = !note.title && (note.content ?? "").length < 200;
+  const isShort =
+    !note.title && !note.image_url && (note.content ?? "").length < 200;
 
   return (
     <article className={`note ${isShort ? "note--short" : ""}`}>
