@@ -20,7 +20,6 @@ export function NoteForm({
     title: string | null;
     content: string | null;
     image_url: string | null;
-    image_caption: string | null;
     tags?: string[];
   };
   noteId?: string;
@@ -32,13 +31,11 @@ export function NoteForm({
     title: string | null;
     content: string | null;
     image_url: string | null;
-    image_caption: string | null;
     tags?: string[];
   }>({
     title: initialData?.title ?? null,
     content: initialData?.content ?? null,
     image_url: initialData?.image_url ?? null,
-    image_caption: initialData?.image_caption ?? null,
     tags: initialData?.tags ?? [],
   });
 

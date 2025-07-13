@@ -19,18 +19,14 @@ export async function NoteView({ note }: Readonly<Props>) {
 
       {note.image_url && (
         <figure>
-          <img
-            src={getFullImageUrl(note.image_url)}
-            alt={note.image_caption ?? ""}
-          />
-          {note.image_caption && <figcaption>{note.image_caption}</figcaption>}
+          <img src={getFullImageUrl(note.image_url)} />
         </figure>
       )}
 
       <ReactMarkdown>{note.content ?? ""}</ReactMarkdown>
 
       {/* Show "Read more" if the note is a tag */}
-      {note.is_tag && (
+      {note.has_children && (
         <p className="note--read-more">
           <Link href={`/p/${note.id}`}>Read more</Link>
         </p>

@@ -44,10 +44,13 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
         title: row.note_title,
         content: row.note_content,
         image_url: row.image_url,
-        image_caption: row.image_caption,
+        has_children: row.has_children,
+        is_important: row.is_important,
+        is_private: row.is_private,
+        use_as_tag: row.use_as_tag,
+        sort_index: row.sort_index,
         created_at: row.created_at,
         updated_at: row.updated_at,
-        is_tag: row.is_tag,
         tags: [],
       });
     }

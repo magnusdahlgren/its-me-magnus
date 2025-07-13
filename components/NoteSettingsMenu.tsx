@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./NoteSettingsMenu.module.css";
 
 export function NoteSettingsMenu({
@@ -14,9 +14,31 @@ export function NoteSettingsMenu({
   const [useAsTag, setUseAsTag] = useState(false);
   const [sortIndex, setSortIndex] = useState("");
 
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        toggleRef.current &&
+        !toggleRef.current.contains(target)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const checkboxOptions = [
     {
-      label: "Is important",
+      label: "Important",
       value: isImportant,
       setter: setIsImportant,
     },
@@ -35,6 +57,7 @@ export function NoteSettingsMenu({
   return (
     <div className={styles.menuWrapper}>
       <button
+        ref={toggleRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`${styles.menuToggle} ${
@@ -43,7 +66,7 @@ export function NoteSettingsMenu({
       />
 
       {isOpen && (
-        <div className={styles.menu}>
+        <div ref={menuRef} className={styles.menu}>
           <div className={styles.menuGrid}>
             {checkboxOptions.map((opt, index) => (
               <label
@@ -57,6 +80,7 @@ export function NoteSettingsMenu({
                   type="checkbox"
                   checked={opt.value}
                   onChange={() => opt.setter((v) => !v)}
+                  className={styles.checkbox}
                 />
               </label>
             ))}

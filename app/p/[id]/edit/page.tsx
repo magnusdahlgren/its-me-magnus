@@ -18,7 +18,6 @@ export default function EditNoteModal() {
     title: string | null;
     content: string | null;
     image_url: string | null;
-    image_caption: string | null;
     tags: string[];
   }>(null);
 
@@ -54,7 +53,7 @@ export default function EditNoteModal() {
     async function fetchNoteAndTags() {
       const { data: note, error: noteError } = await supabase
         .from("notes")
-        .select("id, title, content, image_url, image_caption")
+        .select("id, title, content, image_url")
         .eq("id", id)
         .single();
 
@@ -71,7 +70,6 @@ export default function EditNoteModal() {
         title: note.title,
         content: note.content,
         image_url: note.image_url,
-        image_caption: note.image_caption,
         tags: tagIds,
       });
     }

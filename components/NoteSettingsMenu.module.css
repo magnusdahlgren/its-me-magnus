@@ -91,3 +91,11 @@
   cursor: pointer;
   text-align: left;
 }
+
+.checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #333;
+  cursor: pointer;
+  border-radius: 0;
+}

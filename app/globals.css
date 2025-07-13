@@ -384,14 +384,6 @@ article figure img {
   margin-bottom: 0 !important;
 }
 
-article figcaption {
-  font-size: 1.1rem;
-  line-height: 1.4;
-  color: #666;
-  margin-top: 0.5rem;
-  font-style: italic;
-}
-
 article li.important a {
   font-weight: 600;
 }
