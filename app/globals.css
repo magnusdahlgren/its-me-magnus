@@ -295,7 +295,7 @@ div.note--navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem; /* optional, for spacing between tags and button */
+  gap: 1rem;
 }
 
 .note--footer {
@@ -390,6 +390,10 @@ article li.important a {
 
 article li.untagged a {
   font-style: italic;
+}
+
+ul.important_tags a {
+  font-weight: 600;
 }
 
 /* ==================== */

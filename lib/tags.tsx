@@ -84,12 +84,21 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   return Array.from(notesById.values());
 }
 
-export async function getAllTags(): Promise<Tag[]> {
-  const { data, error } = await supabase
+export async function getAllTags(isImportant?: boolean): Promise<Tag[]> {
+  let query = supabase
     .from("tag_summaries")
     .select("tag_id, title, is_important, notes_count");
 
-  if (error || !data) return [];
+  if (typeof isImportant === "boolean") {
+    query = query.eq("is_important", isImportant);
+  }
+
+  const { data, error } = await query;
+
+  if (error || !data) {
+    console.error("Error fetching tags:", error);
+    return [];
+  }
 
   return data.map((tag) => ({
     id: tag.tag_id,
