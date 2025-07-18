@@ -19,9 +19,25 @@ export async function updateNote(noteId: string, data: Record<string, any>) {
 }
 
 export async function insertNote(noteId: string, data: Record<string, any>) {
+  // Remove keys with null or undefined values that should use DB defaults
+  const cleanedData = Object.fromEntries(
+    Object.entries(data).filter(([key, value]) => {
+      if (
+        key === "sort_index" ||
+        key === "created_at" ||
+        key === "updated_at"
+      ) {
+        return value !== null && value !== undefined;
+      }
+      return true;
+    })
+  );
+
+  console.log("Inserting note with ID:", noteId, "and data:", cleanedData);
+
   const { error } = await supabase
     .from("notes")
-    .insert([{ id: noteId, ...data }])
+    .insert([{ id: noteId, ...cleanedData }])
     .select()
     .single();
 
@@ -29,5 +45,7 @@ export async function insertNote(noteId: string, data: Record<string, any>) {
     console.error("Error inserting note:", error);
     return error;
   }
+
+  console.log("Note inserted successfully:", cleanedData);
   return null;
 }

@@ -10,43 +10,26 @@ import { ImageSelector } from "./ImageSelector";
 import { deleteImage, getImageFileName, uploadImage } from "@/lib/images";
 import { deleteTagsForNote, updateTagsForNote } from "@/lib/tags";
 import { NoteSettingsMenu } from "./NoteSettingsMenu";
+import type { FormType } from "@/types/note";
 
 export function NoteForm({
   initialData,
   noteId,
   defaultTagId,
 }: Readonly<{
-  initialData?: {
-    title: string | null;
-    content: string | null;
-    image_url: string | null;
-    is_important: boolean | null;
-    is_private: boolean | null;
-    use_as_tag: boolean | null;
-    sort_index: number | null;
-    tags?: string[];
-  };
+  initialData?: Partial<FormType>;
   noteId?: string;
   defaultTagId?: string;
 }>) {
   const router = useRouter();
 
-  const [form, setForm] = useState<{
-    title: string | null;
-    content: string | null;
-    image_url: string | null;
-    is_important: boolean | null;
-    is_private: boolean | null;
-    use_as_tag: boolean | null;
-    sort_index: number | null;
-    tags?: string[];
-  }>({
+  const [form, setForm] = useState<FormType>({
     title: initialData?.title ?? null,
     content: initialData?.content ?? null,
     image_url: initialData?.image_url ?? null,
-    is_important: initialData?.is_important ?? null,
-    is_private: initialData?.is_private ?? null,
-    use_as_tag: initialData?.use_as_tag ?? null,
+    is_important: initialData?.is_important ?? false,
+    is_private: initialData?.is_private ?? false,
+    use_as_tag: initialData?.use_as_tag ?? false,
     sort_index: initialData?.sort_index ?? null,
     tags: initialData?.tags ?? [],
   });
@@ -106,8 +89,8 @@ export function NoteForm({
     router.push("/p/start");
   }
 
-  function buildNoteData(form: typeof initialData, imageUrl: string | null) {
-    const { tags: _ignored, ...noteData } = form || {};
+  function buildNoteData(form: FormType, imageUrl: string | null) {
+    const { tags: _ignored, ...noteData } = form;
     return { ...noteData, image_url: imageUrl };
   }
 

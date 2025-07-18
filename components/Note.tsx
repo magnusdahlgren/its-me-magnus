@@ -14,7 +14,11 @@ export async function NoteView({ note }: Readonly<Props>) {
     !note.title && !note.image_url && (note.content ?? "").length < 200;
 
   return (
-    <article className={`note ${isShort ? "note--short" : ""}`}>
+    <article
+      className={`note ${isShort ? "note--short" : ""} ${
+        note.is_private ? "note--private" : ""
+      }`}
+    >
       {note.title && <h1>{note.title}</h1>}
 
       {note.image_url && (

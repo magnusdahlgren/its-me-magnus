@@ -1,16 +1,6 @@
 import { useRef, useEffect } from "react";
 import styles from "./NoteSettingsMenu.module.css";
-
-type FormType = {
-  title: string | null;
-  content: string | null;
-  image_url: string | null;
-  is_important: boolean | null;
-  is_private: boolean | null;
-  use_as_tag: boolean | null;
-  sort_index: number | null;
-  tags?: string[];
-};
+import type { FormType } from "@/types/note";
 
 export function NoteSettingsMenu({
   isLoading,
