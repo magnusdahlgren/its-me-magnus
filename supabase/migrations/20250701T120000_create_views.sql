@@ -3,6 +3,7 @@ drop view if exists random_note;
 drop view if exists tag_summaries;
 drop view if exists untagged_notes;
 
+
 -- Create random_note view
 create view random_note as
 select
@@ -10,7 +11,6 @@ select
   title,
   content,
   image_url,
-  image_caption,
   is_important,
   created_at,
   updated_at
@@ -36,7 +36,6 @@ select
   title,
   content,
   image_url,
-  image_caption,
   is_important,
   created_at,
   updated_at
@@ -48,13 +47,17 @@ and id not in (
   select tag_id from notes_tags
 );
 
-create or replace view notes_with_tags as
+drop view if exists notes_with_tags;
+create view notes_with_tags as
 select
   n.id as note_id,
   n.title as note_title,
   n.content as note_content,
   n.image_url,
-  n.image_caption,
+  n.is_important,
+  n.is_private,
+  n.use_as_tag,
+  n.sort_index,
   n.created_at,
   n.updated_at,
   t.id as tag_id,
@@ -65,7 +68,26 @@ select
     from notes_tags nt
     where nt.tag_id = n.id
     limit 1
-  ) as is_tag
+  ) as has_children
 from notes n
 left join notes_tags nt on nt.note_id = n.id
 left join notes t on t.id = nt.tag_id;
+
+drop view if exists notes_with_child_counts;
+create view notes_with_child_counts as
+ WITH child_counts AS (
+         SELECT notes_tags.tag_id AS note_id,
+            count(*) AS number_of_children
+           FROM notes_tags
+          GROUP BY notes_tags.tag_id
+        )
+ SELECT notes.id,
+    notes.title,
+    notes.content,
+    notes.image_url,
+    notes.is_important,
+    notes.created_at,
+    notes.updated_at,
+    COALESCE(child_counts.number_of_children, 0::bigint) AS number_of_children
+   FROM notes
+     LEFT JOIN child_counts ON notes.id = child_counts.note_id;

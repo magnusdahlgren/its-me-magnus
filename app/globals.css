@@ -290,12 +290,16 @@ article tbody tr + tr {
   font-size: 2.2rem;
 }
 
+.note--private {
+  background-color: #e3e3e3;
+}
+
 div.note--navigation {
   margin: 2rem 0 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem; /* optional, for spacing between tags and button */
+  gap: 1rem;
 }
 
 .note--footer {
@@ -384,20 +388,16 @@ article figure img {
   margin-bottom: 0 !important;
 }
 
-article figcaption {
-  font-size: 1.1rem;
-  line-height: 1.4;
-  color: #666;
-  margin-top: 0.5rem;
-  font-style: italic;
-}
-
 article li.important a {
   font-weight: 600;
 }
 
 article li.untagged a {
   font-style: italic;
+}
+
+ul.important_tags a {
+  font-weight: 600;
 }
 
 /* ==================== */

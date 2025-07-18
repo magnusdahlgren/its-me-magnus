@@ -4,8 +4,6 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [SUPABASE_URL], // Add your Supabase domain here
+    domains: [new URL(SUPABASE_URL).hostname],
   },
 };
-
-export default nextConfig;

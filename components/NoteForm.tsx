@@ -9,35 +9,28 @@ import { generateNoteId, updateNote, insertNote } from "@/lib/notes";
 import { ImageSelector } from "./ImageSelector";
 import { deleteImage, getImageFileName, uploadImage } from "@/lib/images";
 import { deleteTagsForNote, updateTagsForNote } from "@/lib/tags";
+import { NoteSettingsMenu } from "./NoteSettingsMenu";
+import type { FormType } from "@/types/note";
 
 export function NoteForm({
   initialData,
   noteId,
   defaultTagId,
 }: Readonly<{
-  initialData?: {
-    title: string | null;
-    content: string | null;
-    image_url: string | null;
-    image_caption: string | null;
-    tags?: string[];
-  };
+  initialData?: Partial<FormType>;
   noteId?: string;
   defaultTagId?: string;
 }>) {
   const router = useRouter();
 
-  const [form, setForm] = useState<{
-    title: string | null;
-    content: string | null;
-    image_url: string | null;
-    image_caption: string | null;
-    tags?: string[];
-  }>({
+  const [form, setForm] = useState<FormType>({
     title: initialData?.title ?? null,
     content: initialData?.content ?? null,
     image_url: initialData?.image_url ?? null,
-    image_caption: initialData?.image_caption ?? null,
+    is_important: initialData?.is_important ?? false,
+    is_private: initialData?.is_private ?? false,
+    use_as_tag: initialData?.use_as_tag ?? false,
+    sort_index: initialData?.sort_index ?? null,
     tags: initialData?.tags ?? [],
   });
 
@@ -49,6 +42,7 @@ export function NoteForm({
   const [imageWasRemoved, setImageWasRemoved] = useState(false);
   const [imageWasAdded, setImageWasAdded] = useState(false);
   const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const oldImageFilename = initialData?.image_url;
 
   const handleImageChange = (file: File | null) => {
@@ -95,8 +89,8 @@ export function NoteForm({
     router.push("/p/start");
   }
 
-  function buildNoteData(form: typeof initialData, imageUrl: string | null) {
-    const { tags: _ignored, ...noteData } = form || {};
+  function buildNoteData(form: FormType, imageUrl: string | null) {
+    const { tags: _ignored, ...noteData } = form;
     return { ...noteData, image_url: imageUrl };
   }
 
@@ -172,16 +166,14 @@ export function NoteForm({
       </div>
 
       <div className={styles.modalFooter}>
-        {noteId ? (
-          <button
-            type="button"
-            className={styles.deleteButton}
-            disabled={isLoading}
-            onClick={handleDelete}
-          >
-            Delete Note
-          </button>
-        ) : null}
+        <NoteSettingsMenu
+          isLoading={isLoading}
+          onDelete={handleDelete}
+          form={form}
+          setForm={setForm}
+          isOpen={settingsOpen}
+          setIsOpen={setSettingsOpen}
+        />
         <button
           type="submit"
           className={styles.saveButton}

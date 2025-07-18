@@ -22,7 +22,14 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   if (tagId === "_untagged") {
     const { data, error } = await supabase.from("untagged_notes").select("*");
 
-    if (error || !data) return [];
+    if (error) {
+      console.error(
+        "Supabase error in getNotesForTag:",
+        error.message,
+        error.details || error.hint || error
+      );
+      return [];
+    }
     return data as Note[];
   }
 
@@ -30,9 +37,17 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   const { data, error } = await supabase
     .from("notes_with_tags")
     .select("*")
-    .eq("tag_id", tagId);
+    .eq("tag_id", tagId)
+    .order("sort_index", { ascending: true });
 
-  if (error || !data) return [];
+  if (error) {
+    console.error(
+      "Supabase error in getNotesForTag:",
+      error.message,
+      error.details || error.hint || error
+    );
+    return [];
+  }
 
   // Group rows by note_id
   const notesById = new Map<string, Note>();
@@ -44,10 +59,13 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
         title: row.note_title,
         content: row.note_content,
         image_url: row.image_url,
-        image_caption: row.image_caption,
+        has_children: row.has_children,
+        is_important: row.is_important,
+        is_private: row.is_private,
+        use_as_tag: row.use_as_tag,
+        sort_index: row.sort_index,
         created_at: row.created_at,
         updated_at: row.updated_at,
-        is_tag: row.is_tag,
         tags: [],
       });
     }
@@ -66,12 +84,21 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   return Array.from(notesById.values());
 }
 
-export async function getAllTags(): Promise<Tag[]> {
-  const { data, error } = await supabase
+export async function getAllTags(isImportant?: boolean): Promise<Tag[]> {
+  let query = supabase
     .from("tag_summaries")
     .select("tag_id, title, is_important, notes_count");
 
-  if (error || !data) return [];
+  if (typeof isImportant === "boolean") {
+    query = query.eq("is_important", isImportant);
+  }
+
+  const { data, error } = await query;
+
+  if (error || !data) {
+    console.error("Error fetching tags:", error);
+    return [];
+  }
 
   return data.map((tag) => ({
     id: tag.tag_id,

@@ -10,26 +10,27 @@ interface Props {
 }
 
 export async function NoteView({ note }: Readonly<Props>) {
-  const isShort = !note.title && (note.content ?? "").length < 200;
+  const isShort =
+    !note.title && !note.image_url && (note.content ?? "").length < 200;
 
   return (
-    <article className={`note ${isShort ? "note--short" : ""}`}>
+    <article
+      className={`note ${isShort ? "note--short" : ""} ${
+        note.is_private ? "note--private" : ""
+      }`}
+    >
       {note.title && <h1>{note.title}</h1>}
 
       {note.image_url && (
         <figure>
-          <img
-            src={getFullImageUrl(note.image_url)}
-            alt={note.image_caption ?? ""}
-          />
-          {note.image_caption && <figcaption>{note.image_caption}</figcaption>}
+          <img src={getFullImageUrl(note.image_url)} alt="" />
         </figure>
       )}
 
       <ReactMarkdown>{note.content ?? ""}</ReactMarkdown>
 
       {/* Show "Read more" if the note is a tag */}
-      {note.is_tag && (
+      {note.has_children && (
         <p className="note--read-more">
           <Link href={`/p/${note.id}`}>Read more</Link>
         </p>

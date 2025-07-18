@@ -19,9 +19,23 @@ export async function updateNote(noteId: string, data: Record<string, any>) {
 }
 
 export async function insertNote(noteId: string, data: Record<string, any>) {
+  // Remove keys with null or undefined values that should use DB defaults
+  const cleanedData = Object.fromEntries(
+    Object.entries(data).filter(([key, value]) => {
+      if (
+        key === "sort_index" ||
+        key === "created_at" ||
+        key === "updated_at"
+      ) {
+        return value !== null && value !== undefined;
+      }
+      return true;
+    })
+  );
+
   const { error } = await supabase
     .from("notes")
-    .insert([{ id: noteId, ...data }])
+    .insert([{ id: noteId, ...cleanedData }])
     .select()
     .single();
 
@@ -29,5 +43,6 @@ export async function insertNote(noteId: string, data: Record<string, any>) {
     console.error("Error inserting note:", error);
     return error;
   }
+
   return null;
 }
