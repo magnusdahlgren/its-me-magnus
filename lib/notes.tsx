@@ -33,8 +33,6 @@ export async function insertNote(noteId: string, data: Record<string, any>) {
     })
   );
 
-  console.log("Inserting note with ID:", noteId, "and data:", cleanedData);
-
   const { error } = await supabase
     .from("notes")
     .insert([{ id: noteId, ...cleanedData }])
@@ -46,6 +44,5 @@ export async function insertNote(noteId: string, data: Record<string, any>) {
     return error;
   }
 
-  console.log("Note inserted successfully:", cleanedData);
   return null;
 }

@@ -23,7 +23,7 @@ export async function NoteView({ note }: Readonly<Props>) {
 
       {note.image_url && (
         <figure>
-          <img src={getFullImageUrl(note.image_url)} />
+          <img src={getFullImageUrl(note.image_url)} alt="" />
         </figure>
       )}
 
