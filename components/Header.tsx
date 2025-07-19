@@ -29,7 +29,7 @@ export function Header() {
             </li>
           ) : (
             <li>
-              <Link href="/sign-in" scroll={false}>
+              <Link href="/auth/sign-in" scroll={false}>
                 Sign in
               </Link>
             </li>

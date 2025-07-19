@@ -1,11 +1,11 @@
 .signInForm {
+  font-family: "IBM Plex Sans", sans-serif;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
-  font-family: inherit;
 }
 
 .signInForm h2 {

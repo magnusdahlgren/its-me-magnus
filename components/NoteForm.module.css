@@ -53,6 +53,7 @@
 
 .saveButton,
 .deleteButton {
+  font-family: "IBM Plex Sans", sans-serif;
   padding: 0.8rem 1.5rem;
   border: none;
   border-radius: 0.5rem;

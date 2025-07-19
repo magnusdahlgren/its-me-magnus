@@ -23,6 +23,7 @@
 }
 
 .menu {
+  font-family: "IBM Plex Sans", sans-serif;
   position: absolute;
   bottom: 3rem;
   left: 0;
