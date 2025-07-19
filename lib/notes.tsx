@@ -1,3 +1,4 @@
+import { format } from "date-fns/format";
 import { supabase } from "./supabase";
 
 export function generateNoteId(): string {
@@ -45,4 +46,9 @@ export async function insertNote(noteId: string, data: Record<string, any>) {
   }
 
   return null;
+}
+
+export function formatUkDate(dateString: string): string {
+  const date = new Date(dateString);
+  return format(date, "d/M/yy");
 }

@@ -4,6 +4,7 @@ import { renderTagsForNote } from "@/lib/tags";
 import { EditNoteLink } from "./EditNoteLink";
 import Link from "next/link";
 import { getFullImageUrl } from "@/lib/images";
+import { formatUkDate } from "@/lib/notes";
 
 interface Props {
   note: Note;
@@ -38,11 +39,10 @@ export async function NoteView({ note }: Readonly<Props>) {
 
       <footer className="note--footer">
         <p className="note--date">
-          {new Intl.DateTimeFormat("en-GB", {
-            day: "numeric",
-            month: "numeric",
-            year: "2-digit",
-          }).format(new Date(note.created_at))}
+          {formatUkDate(note.created_at)}
+          {note.updated_at && note.updated_at !== note.created_at && (
+            <> (updated {formatUkDate(note.updated_at)})</>
+          )}
         </p>
         {await renderTagsForNote(note.id)}
         <EditNoteLink noteId={note.id} />
