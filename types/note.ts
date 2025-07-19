@@ -11,7 +11,7 @@ export interface Note {
   use_as_tag: boolean;
   sort_index: number;
   created_at: string;
-  updated_at: string | null;
+  updated_at?: string | null;
   tags: Tag[];
 }
 
@@ -23,5 +23,6 @@ export type FormType = {
   is_private: boolean;
   use_as_tag: boolean;
   sort_index: number | null;
+  updated_at?: string | null;
   tags?: string[];
 };

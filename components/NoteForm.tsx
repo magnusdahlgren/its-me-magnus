@@ -32,6 +32,7 @@ export function NoteForm({
     use_as_tag: initialData?.use_as_tag ?? false,
     sort_index: initialData?.sort_index ?? null,
     tags: initialData?.tags ?? [],
+    updated_at: initialData?.updated_at ?? null,
   });
 
   const [tags, setTags] = useState<string[]>(
@@ -44,6 +45,7 @@ export function NoteForm({
   const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
   const [settingsOpen, setSettingsOpen] = useState(false);
   const oldImageFilename = initialData?.image_url;
+  const [significantUpdate, setSignificantUpdate] = useState(false);
 
   const handleImageChange = (file: File | null) => {
     if (!file) {
@@ -113,11 +115,22 @@ export function NoteForm({
     }
     const noteData = buildNoteData(form, imageUrl);
 
+    // If it's a significant update, include updated_at
+    const finalData = { ...noteData };
+
+    if (noteAlreadyExists) {
+      if (significantUpdate) {
+        finalData.updated_at = new Date().toISOString();
+      } else {
+        delete finalData.updated_at;
+      }
+    }
+
     // 2. Insert or update note in db
     if (noteAlreadyExists) {
-      await updateNote(currentNoteId, noteData);
+      await updateNote(currentNoteId, finalData);
     } else {
-      await insertNote(currentNoteId, noteData);
+      await insertNote(currentNoteId, finalData);
     }
 
     // 3. Update tags
@@ -174,6 +187,17 @@ export function NoteForm({
           isOpen={settingsOpen}
           setIsOpen={setSettingsOpen}
         />
+        {noteId && (
+          <label className={styles.significantUpdateLabel}>
+            <input
+              type="checkbox"
+              checked={significantUpdate}
+              onChange={(e) => setSignificantUpdate(e.target.checked)}
+              className={styles.significantUpdateCheckbox}
+            />
+            <span>Significant update</span>
+          </label>
+        )}
         <button
           type="submit"
           className={styles.saveButton}
