@@ -9,10 +9,11 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
+  const { id } = await params;
   const { data: note } = await supabase
     .from("notes")
     .select("title")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   return {
