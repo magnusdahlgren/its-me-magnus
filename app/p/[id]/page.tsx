@@ -2,6 +2,23 @@ import { supabase } from "@/lib/supabase";
 import { NoteView } from "@/components/Note";
 import { getNotesForTag } from "@/lib/tags";
 import { AddNoteLink } from "@/components/AddNoteLink";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const { data: note } = await supabase
+    .from("notes")
+    .select("title")
+    .eq("id", params.id)
+    .single();
+
+  return {
+    title: (note?.title ?? "Note not found") + " - It's Me Magnus",
+  };
+}
 
 export default async function NotePage({ params }: { params: { id: string } }) {
   const { id } = await params;
