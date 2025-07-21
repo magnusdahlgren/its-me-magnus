@@ -9,9 +9,10 @@ import { formatUkDate } from "@/lib/notes";
 interface Props {
   note: Note;
   isLead?: boolean; // If true, this note is the main one on the page
+  tagIdToExclude?: string;
 }
 
-async function noteMetadata(note: Note) {
+async function noteMetadata(note: Note, tagIdToExclude: string | undefined) {
   return (
     <div className="note--metadata">
       <p className="note--date">
@@ -20,13 +21,17 @@ async function noteMetadata(note: Note) {
           <> (updated {formatUkDate(note.updated_at)})</>
         )}
       </p>
-      {await renderTagsForNote(note.id)}
+      {await renderTagsForNote(note.id, tagIdToExclude)}
       <EditNoteLink noteId={note.id} />
     </div>
   );
 }
 
-export async function NoteView({ note, isLead = false }: Readonly<Props>) {
+export async function NoteView({
+  note,
+  isLead = false,
+  tagIdToExclude,
+}: Readonly<Props>) {
   const isShort =
     !note.title && !note.image_url && (note.content ?? "").length < 200;
 
@@ -56,7 +61,7 @@ export async function NoteView({ note, isLead = false }: Readonly<Props>) {
           <Link href={`/p/${note.id}`}>Read more</Link>
         </p>
       )}
-      {await noteMetadata(note)}
+      {await noteMetadata(note, tagIdToExclude)}
     </article>
   );
 }

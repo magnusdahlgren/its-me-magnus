@@ -46,8 +46,12 @@ export default async function NotePage({ params }: { params: { id: string } }) {
   return (
     <div>
       {note && <NoteView note={note} isLead={true} />}
-      {notesToShow?.map((note) => (
-        <NoteView key={note.id} note={note} />
+      {notesToShow?.map((taggedNote) => (
+        <NoteView
+          key={taggedNote.id}
+          note={taggedNote}
+          tagIdToExclude={note.id}
+        />
       ))}
       <AddNoteLink tagId={note.id} />
     </div>

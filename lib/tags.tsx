@@ -4,11 +4,20 @@ import { Note } from "@/types/note";
 import { JSX } from "react";
 import Link from "next/link";
 
-export async function getTagsForNote(noteId: string): Promise<Tag[]> {
-  const { data, error } = await supabase
+export async function getTagsForNote(
+  noteId: string,
+  tagIdToExclude?: string
+): Promise<Tag[]> {
+  let query = supabase
     .from("notes_tags")
     .select("tag:tag_id(id, title, is_important)")
     .eq("note_id", noteId);
+
+  if (tagIdToExclude) {
+    query = query.neq("tag_id", tagIdToExclude);
+  }
+
+  const { data, error } = await query;
 
   if (error || !data) return [];
 
@@ -109,9 +118,10 @@ export async function getAllTags(isImportant?: boolean): Promise<Tag[]> {
 }
 
 export async function renderTagsForNote(
-  noteId: string
+  noteId: string,
+  tagIdToExclude: string | undefined
 ): Promise<JSX.Element | null> {
-  const tags = await getTagsForNote(noteId);
+  const tags = await getTagsForNote(noteId, tagIdToExclude);
 
   if (tags.length === 0) return null;
 
