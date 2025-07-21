@@ -10,9 +10,7 @@ export function Header() {
   return (
     <header className="site-header">
       <p className="site-logo">
-        <Link href="/p/start">
-          M<span>agnus D</span>
-        </Link>
+        <Link href="/p/start">Mxgns</Link>
       </p>
       <nav>
         <ul>
