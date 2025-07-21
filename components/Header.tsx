@@ -10,7 +10,9 @@ export function Header() {
   return (
     <header className="site-header">
       <p className="site-logo">
-        <Link href="/p/start">It’s Me Magnus</Link>
+        <Link href="/p/start">
+          M<span>agnus D</span>
+        </Link>
       </p>
       <nav>
         <ul>
@@ -18,10 +20,10 @@ export function Header() {
             <Link href="/p/start">Start</Link>
           </li>
           <li>
-            <Link href="/tags">All tags</Link>
+            <Link href="/tags">Tags</Link>
           </li>
           <li>
-            <Link href="/random">Random note</Link>
+            <Link href="/random">Random</Link>
           </li>
           {isLoggedIn ? (
             <li>

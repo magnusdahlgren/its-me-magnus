@@ -205,8 +205,8 @@ pre code {
 .site-header {
   padding: 1rem 1.5rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   font-weight: 500;
   margin-bottom: 2em;
 }
@@ -231,14 +231,31 @@ pre code {
   text-decoration: none;
 }
 
-.site-header a:hover {
-  color: #005fa3;
+.site-header li a:hover {
+  color: #c47448;
 }
 
 .site-logo {
-  font-size: 2rem;
-  letter-spacing: -0.02rem;
+  font-size: 8rem;
+  font-weight: 400;
+  letter-spacing: -0.5rem;
   margin: 0;
+}
+
+.site-logo span {
+  display: inline-block;
+  vertical-align: bottom; /* or try baseline or text-bottom */
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity 0.4s ease, max-width 1.2s ease;
+}
+
+.site-logo:hover span {
+  opacity: 1;
+  max-width: none;
+  overflow: visible;
 }
 
 /* ==================== */
@@ -380,6 +397,7 @@ p.note--read-more a {
 
 .note--lead h1 {
   font-size: 4rem;
+  letter-spacing: -0.07rem;
 }
 
 article ul,
