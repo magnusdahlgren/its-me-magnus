@@ -39,21 +39,6 @@ export function NoteSettingsMenu({
     };
   }, [setIsOpen]);
 
-  const checkboxOptions = [
-    {
-      label: "Important",
-      key: "is_important" as const,
-    },
-    {
-      label: "Use as tag",
-      key: "use_as_tag" as const,
-    },
-    {
-      label: "Private note",
-      key: "is_private" as const,
-    },
-  ];
-
   return (
     <div className={styles.menuWrapper}>
       <button
@@ -63,52 +48,100 @@ export function NoteSettingsMenu({
         className={`${styles.menuToggle} ${
           isOpen ? styles.menuToggleOpen : ""
         }`}
+        aria-label="Toggle settings menu"
       />
 
       {isOpen && (
         <div ref={menuRef} className={styles.menu}>
           <div className={styles.menuGrid}>
-            {checkboxOptions.map((opt, index) => (
-              <label
-                key={opt.key}
-                className={`${styles.menuRowBox} ${
-                  index === 0 ? styles.menuRowBoxFirst : ""
-                }`}
+            <div className={styles.menuRow}>
+              <label htmlFor="is_important">Important</label>
+              <input
+                id="is_important"
+                type="checkbox"
+                checked={form.is_important}
+                onChange={() =>
+                  setForm((prev) => ({
+                    ...prev,
+                    is_important: !prev.is_important,
+                  }))
+                }
+                className={styles.checkbox}
+              />
+            </div>
+
+            <div className={styles.menuRow}>
+              <label htmlFor="use_as_tag">Use as tag</label>
+              <input
+                id="use_as_tag"
+                type="checkbox"
+                checked={form.use_as_tag}
+                onChange={() =>
+                  setForm((prev) => ({
+                    ...prev,
+                    use_as_tag: !prev.use_as_tag,
+                  }))
+                }
+                className={styles.checkbox}
+              />
+            </div>
+
+            <div className={styles.menuRow}>
+              <label htmlFor="is_private">Private note</label>
+              <input
+                id="is_private"
+                type="checkbox"
+                checked={form.is_private}
+                onChange={() =>
+                  setForm((prev) => ({
+                    ...prev,
+                    is_private: !prev.is_private,
+                  }))
+                }
+                className={styles.checkbox}
+              />
+            </div>
+
+            <div className={styles.menuRow}>
+              <label htmlFor="sort_index">Sort index</label>
+              <input
+                id="sort_index"
+                type="number"
+                value={form.sort_index ?? ""}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    sort_index:
+                      e.target.value === "" ? null : Number(e.target.value),
+                  }))
+                }
+                className={styles.sortInput}
+              />
+            </div>
+
+            <div className={styles.menuRow}>
+              <label htmlFor="order_tagged_by">Sort tagged by</label>
+              <select
+                id="order_tagged_by"
+                className={styles.sortOption}
+                value={form.order_tagged_by}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    order_tagged_by: e.target.value as
+                      | "newest"
+                      | "oldest"
+                      | "index",
+                  }))
+                }
               >
-                <span className={styles.labelText}>{opt.label}</span>
-                <input
-                  type="checkbox"
-                  checked={!!form[opt.key]}
-                  onChange={() =>
-                    setForm((prev) => ({
-                      ...prev,
-                      [opt.key]: !prev[opt.key],
-                    }))
-                  }
-                  className={styles.checkbox}
-                />
-              </label>
-            ))}
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="index">Index</option>
+              </select>
+            </div>
 
-            <label className={styles.menuRow}>
-              <div className={styles.menuRowBox}>
-                <span className={styles.labelText}>Sort index</span>
-                <input
-                  type="number"
-                  value={form.sort_index ?? ""}
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      sort_index:
-                        e.target.value === "" ? null : Number(e.target.value),
-                    }))
-                  }
-                  className={styles.sortInput}
-                />
-              </div>
-            </label>
-
-            <div className={`${styles.menuRowBox} ${styles.menuRowBoxLast}`}>
+            <div className={styles.menuRow}>
               <button
                 type="button"
                 onClick={onDelete}

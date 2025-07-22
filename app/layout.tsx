@@ -2,7 +2,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 
 export const metadata = {
-  title: "It's Me Magnus",
+  title: "MXGNS",
 };
 
 export default function RootLayout({

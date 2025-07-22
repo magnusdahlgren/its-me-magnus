@@ -8,9 +8,30 @@ import { formatUkDate } from "@/lib/notes";
 
 interface Props {
   note: Note;
+  isLead?: boolean; // If true, this note is the main one on the page
+  tagIdToExclude?: string;
 }
 
-export async function NoteView({ note }: Readonly<Props>) {
+async function noteMetadata(note: Note, tagIdToExclude: string | undefined) {
+  return (
+    <div className="note--metadata">
+      <p className="note--date">
+        {formatUkDate(note.created_at)}
+        {note.updated_at && note.updated_at !== note.created_at && (
+          <> (updated {formatUkDate(note.updated_at)})</>
+        )}
+      </p>
+      {await renderTagsForNote(note.id, tagIdToExclude)}
+      <EditNoteLink noteId={note.id} />
+    </div>
+  );
+}
+
+export async function NoteView({
+  note,
+  isLead = false,
+  tagIdToExclude,
+}: Readonly<Props>) {
   const isShort =
     !note.title && !note.image_url && (note.content ?? "").length < 200;
 
@@ -18,17 +39,21 @@ export async function NoteView({ note }: Readonly<Props>) {
     <article
       className={`note ${isShort ? "note--short" : ""} ${
         note.is_private ? "note--private" : ""
-      }`}
+      } ${isLead ? "note--lead" : ""}`}
     >
-      {note.title && <h1>{note.title}</h1>}
-
-      {note.image_url && (
-        <figure>
-          <img src={getFullImageUrl(note.image_url)} alt="" />
-        </figure>
+      {note.title && (
+        <h1 className="note--title">
+          {isLead ? (
+            note.title
+          ) : (
+            <Link href={`/p/${note.id}`}>{note.title}</Link>
+          )}
+        </h1>
       )}
 
-      <ReactMarkdown>{note.content ?? ""}</ReactMarkdown>
+      {note.image_url && <img src={getFullImageUrl(note.image_url)} alt="" />}
+
+      {note.content && <ReactMarkdown>{note.content ?? ""}</ReactMarkdown>}
 
       {/* Show "Read more" if the note is a tag */}
       {note.has_children && (
@@ -36,17 +61,7 @@ export async function NoteView({ note }: Readonly<Props>) {
           <Link href={`/p/${note.id}`}>Read more</Link>
         </p>
       )}
-
-      <footer className="note--footer">
-        <p className="note--date">
-          {formatUkDate(note.created_at)}
-          {note.updated_at && note.updated_at !== note.created_at && (
-            <> (updated {formatUkDate(note.updated_at)})</>
-          )}
-        </p>
-        {await renderTagsForNote(note.id)}
-        <EditNoteLink noteId={note.id} />
-      </footer>
+      {await noteMetadata(note, tagIdToExclude)}
     </article>
   );
 }

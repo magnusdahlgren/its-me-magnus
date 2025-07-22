@@ -13,8 +13,8 @@
 .modalContent {
   background: white;
   border-radius: 0.5rem;
-  max-width: 800px;
-  width: 100%;
+  width: auto;
+  max-width: 90vw;
   max-height: 90vh;
   padding: 1rem;
 
@@ -23,6 +23,16 @@
   flex-direction: column;
 
   overflow-y: auto;
+}
+
+.modalWidthWide {
+  width: 100%;
+  max-width: 800px;
+}
+
+.modalWidthNarrow {
+  width: 100%;
+  max-width: 320px;
 }
 
 .modalClose {

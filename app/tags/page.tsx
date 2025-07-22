@@ -6,7 +6,7 @@ export default async function TagsPage() {
   const otherTags = await getAllTags(false);
   return (
     <article>
-      <h1>All Tags</h1>
+      <h1>Browse notes by tags</h1>
       <h3>Main tags</h3>
       <ul className="important_tags">
         {importantTags.map((tag) => (

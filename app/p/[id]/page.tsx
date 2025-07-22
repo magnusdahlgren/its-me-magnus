@@ -3,6 +3,7 @@ import { NoteView } from "@/components/Note";
 import { getNotesForTag } from "@/lib/tags";
 import { AddNoteLink } from "@/components/AddNoteLink";
 import { Metadata } from "next";
+import { getNoteById } from "@/lib/notes";
 
 export async function generateMetadata({
   params,
@@ -17,39 +18,41 @@ export async function generateMetadata({
     .single();
 
   return {
-    title: (note?.title ?? "Note not found") + " - It's Me Magnus",
+    title: (note?.title ?? "Note not found") + " - MXGNS",
   };
 }
 
 export default async function NotePage({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  const { data: note, error: noteError } = await supabase
-    .from("notes")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const note = await getNoteById(id);
 
-  if (noteError)
+  if (!note)
     return (
       <div>
         <p>
           <strong>Note not found:</strong> {id}
         </p>
-        <pre>{JSON.stringify(noteError, null, 2)}</pre>
       </div>
     );
-  if (!note) return <div>Loading…</div>;
 
-  const notesToShow = await getNotesForTag(note.id);
+  const notesToShow = await getNotesForTag(note.id, note.order_tagged_by);
 
   return (
     <div>
-      {note && <NoteView note={note} />}
-      {notesToShow?.map((note) => (
-        <NoteView key={note.id} note={note} />
+      {note && <NoteView note={note} isLead={true} />}
+      {notesToShow?.map((taggedNote) => (
+        <NoteView
+          key={taggedNote.id}
+          note={taggedNote}
+          tagIdToExclude={note.id}
+        />
       ))}
-      <AddNoteLink tagId={note.id} />
+      {note.use_as_tag && (
+        <article>
+          <AddNoteLink tagId={note.id} />
+        </article>
+      )}
     </div>
   );
 }

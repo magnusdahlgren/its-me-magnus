@@ -15,36 +15,22 @@ import type { FormType } from "@/types/note";
 export function NoteForm({
   initialData,
   noteId,
-  defaultTagId,
 }: Readonly<{
-  initialData?: Partial<FormType>;
+  initialData: FormType;
   noteId?: string;
-  defaultTagId?: string;
 }>) {
   const router = useRouter();
 
-  const [form, setForm] = useState<FormType>({
-    title: initialData?.title ?? null,
-    content: initialData?.content ?? null,
-    image_url: initialData?.image_url ?? null,
-    is_important: initialData?.is_important ?? false,
-    is_private: initialData?.is_private ?? false,
-    use_as_tag: initialData?.use_as_tag ?? false,
-    sort_index: initialData?.sort_index ?? null,
-    tags: initialData?.tags ?? [],
-    updated_at: initialData?.updated_at ?? null,
-  });
+  const [form, setForm] = useState<FormType>(initialData);
 
-  const [tags, setTags] = useState<string[]>(
-    initialData?.tags || (defaultTagId ? [defaultTagId] : [])
-  );
+  const [tags, setTags] = useState<string[]>(initialData.tags);
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [imageWasRemoved, setImageWasRemoved] = useState(false);
   const [imageWasAdded, setImageWasAdded] = useState(false);
   const [newImageFile, setNewImageFile] = useState<File | null>(null); // set via ImageSelector
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const oldImageFilename = initialData?.image_url;
+  const oldImageFilename = initialData.image_url;
   const [significantUpdate, setSignificantUpdate] = useState(false);
 
   const handleImageChange = (file: File | null) => {
@@ -118,12 +104,8 @@ export function NoteForm({
     // If it's a significant update, include updated_at
     const finalData = { ...noteData };
 
-    if (noteAlreadyExists) {
-      if (significantUpdate) {
-        finalData.updated_at = new Date().toISOString();
-      } else {
-        delete finalData.updated_at;
-      }
+    if (noteAlreadyExists && significantUpdate) {
+      finalData.updated_at = new Date().toISOString();
     }
 
     // 2. Insert or update note in db
