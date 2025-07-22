@@ -33,6 +33,7 @@
   white-space: nowrap;
   font-size: 1rem;
   border-radius: 0.7rem 0.7rem 0.7rem 0;
+  padding: 0.7rem 1rem;
 }
 
 .menuGrid {
@@ -42,35 +43,15 @@
 }
 
 .menuRow {
-  grid-column: span 1;
-  cursor: pointer;
-}
-
-.menuRowBox {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.4rem 1rem;
-  transition: background 0.2s;
+  padding: 0.33rem 0;
 }
 
-.menuRowBoxFirst {
-  border-radius: 0.7rem 0.7rem 0 0;
-  padding-top: 0.7rem;
-}
-
-.menuRowBoxLast {
-  border-radius: 0 0 0.7rem 0;
-  padding-bottom: 0.7rem;
-}
-
-.menuRowBox:hover {
-  background-color: #ddd;
-}
-
-.labelText {
-  text-align: left;
+.menuRow label {
+  min-width: 110px;
 }
 
 .sortInput,
