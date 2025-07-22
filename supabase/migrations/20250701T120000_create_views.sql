@@ -94,6 +94,7 @@ create view notes_with_child_counts as
      LEFT JOIN child_counts ON notes.id = child_counts.note_id;
 
 ALTER TABLE notes
-ADD COLUMN sort_tagged_by TEXT
-  CHECK (sort_tagged_by IN ('index', 'newest', 'oldest'))
-  DEFAULT 'newest';
+ADD COLUMN order_tagged_by TEXT
+  CHECK (order_tagged_by IN ('index', 'newest', 'oldest'))
+  DEFAULT 'newest'
+  NOT NULL;

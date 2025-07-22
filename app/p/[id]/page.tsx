@@ -18,7 +18,7 @@ export async function generateMetadata({
     .single();
 
   return {
-    title: (note?.title ?? "Note not found") + " - It's Me Magnus",
+    title: (note?.title ?? "Note not found") + " - MXGNS",
   };
 }
 

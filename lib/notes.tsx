@@ -19,8 +19,13 @@ export async function getNoteById(noteId: string): Promise<Note | null> {
     .single();
 
   if (error) {
-    console.error("Error fetching note:", error);
-    return null;
+    // PGRST116 is the PostgREST error code for 'No rows found'
+    if (error.code === "PGRST116") {
+      return null;
+    } else {
+      console.error("Error fetching note:", error);
+      return null;
+    }
   }
 
   return data as Note;
