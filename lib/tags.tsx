@@ -58,8 +58,6 @@ export async function getNotesForTag(
     query = query.order("created_at", { ascending: true });
   }
 
-  console.log("Executing query:", orderTaggedBy);
-
   const { data, error } = await query;
 
   if (error) {

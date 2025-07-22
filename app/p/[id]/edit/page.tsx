@@ -2,29 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { NoteForm } from "@/components/NoteForm";
-import { supabase } from "@/lib/supabase";
 import { getTagsForNote } from "@/lib/tags";
 import styles from "@/components/NoteForm.module.css";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Modal } from "@/components/Modal";
+import type { FormType } from "@/types/note";
+import { getNoteById } from "@/lib/notes";
 
 export default function EditNoteModal() {
   const params = useParams();
   const id = typeof params.id === "string" ? params.id : undefined;
   const [error, setError] = useState<string | null>(null);
-
-  const [initialData, setInitialData] = useState<null | {
-    title: string | null;
-    content: string | null;
-    image_url: string | null;
-    is_important: boolean | null;
-    is_private: boolean | null;
-    use_as_tag: boolean | null;
-    sort_index: number | null;
-    tags: string[];
-  }>(null);
-
+  const [initialData, setInitialData] = useState<FormType | null>(null);
   let content: React.ReactNode;
 
   if (error) {
@@ -55,17 +45,10 @@ export default function EditNoteModal() {
     const safeId = id as string;
 
     async function fetchNoteAndTags() {
-      const { data: note, error: noteError } = await supabase
-        .from("notes")
-        .select(
-          "id, title, content, image_url, is_important, is_private, use_as_tag, sort_index"
-        )
-        .eq("id", id)
-        .single();
+      const note = await getNoteById(safeId);
 
-      if (noteError || !note) {
-        console.error("Error fetching note:", noteError);
-        setError("Failed to load note");
+      if (!note) {
+        setError("Note not found");
         return;
       }
 
@@ -79,7 +62,9 @@ export default function EditNoteModal() {
         is_important: note.is_important,
         is_private: note.is_private,
         use_as_tag: note.use_as_tag,
+        order_tagged_by: note.order_tagged_by ?? "oldest",
         sort_index: note.sort_index,
+        updated_at: note.updated_at,
         tags: tagIds,
       });
     }

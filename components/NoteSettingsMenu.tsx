@@ -111,7 +111,20 @@ export function NoteSettingsMenu({
             <label className={styles.menuRow}>
               <div className={styles.menuRowBox}>
                 <span>Sort tagged by:</span>
-                <select className={styles.sortOption}>
+
+                <select
+                  className={styles.sortOption}
+                  value={form.order_tagged_by}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      order_tagged_by: e.target.value as
+                        | "newest"
+                        | "oldest"
+                        | "index",
+                    }))
+                  }
+                >
                   <option value="newest">Newest</option>
                   <option value="oldest">Oldest</option>
                   <option value="index">Index</option>

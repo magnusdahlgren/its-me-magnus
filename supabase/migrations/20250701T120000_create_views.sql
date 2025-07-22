@@ -57,6 +57,7 @@ select
   n.is_important,
   n.is_private,
   n.use_as_tag,
+  n.order_tagged_by,
   n.sort_index,
   n.created_at,
   n.updated_at,
