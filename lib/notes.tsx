@@ -1,5 +1,6 @@
 import { format } from "date-fns/format";
 import { supabase } from "./supabase";
+import { Note } from "@/types/note";
 
 export function generateNoteId(): string {
   const chars = "abcdefghijklmnopqrstuvwxyz";
@@ -8,6 +9,21 @@ export function generateNoteId(): string {
     id += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return id;
+}
+
+export async function getNoteById(noteId: string): Promise<Note | null> {
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .eq("id", noteId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching note:", error);
+    return null;
+  }
+
+  return data as Note;
 }
 
 export async function updateNote(noteId: string, data: Record<string, any>) {
@@ -34,18 +50,29 @@ export async function insertNote(noteId: string, data: Record<string, any>) {
     })
   );
 
-  const { error } = await supabase
-    .from("notes")
-    .insert([{ id: noteId, ...cleanedData }])
-    .select()
-    .single();
+  const payload = { id: noteId, ...cleanedData };
 
-  if (error) {
-    console.error("Error inserting note:", error);
-    return error;
+  try {
+    const { error, status, statusText } = await supabase
+      .from("notes")
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) {
+      console.error("🛑 Error inserting note:");
+      console.error("Status:", status, statusText);
+      console.error("Error details:", error);
+      console.error("Payload:", JSON.stringify(payload, null, 2));
+      return error;
+    }
+
+    return null;
+  } catch (err) {
+    console.error("Unexpected exception during insert:", err);
+    console.error("Payload:", JSON.stringify(payload, null, 2));
+    return err;
   }
-
-  return null;
 }
 
 export function formatUkDate(dateString: string): string {

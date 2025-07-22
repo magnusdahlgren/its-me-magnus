@@ -91,3 +91,8 @@ create view notes_with_child_counts as
     COALESCE(child_counts.number_of_children, 0::bigint) AS number_of_children
    FROM notes
      LEFT JOIN child_counts ON notes.id = child_counts.note_id;
+
+ALTER TABLE notes
+ADD COLUMN sort_tagged_by TEXT
+  CHECK (sort_tagged_by IN ('index', 'newest', 'oldest'))
+  DEFAULT 'newest';

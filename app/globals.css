@@ -151,6 +151,7 @@ a {
   text-decoration: underline;
   text-underline-offset: 0.2em;
   text-decoration-thickness: from-font;
+  transition: color 0.3s ease;
 }
 a:hover {
   color: #a45c34;
@@ -231,6 +232,7 @@ pre code {
 .site-header a {
   color: #222;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .site-header a:hover {

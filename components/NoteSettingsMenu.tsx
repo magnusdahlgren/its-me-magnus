@@ -108,6 +108,17 @@ export function NoteSettingsMenu({
               </div>
             </label>
 
+            <label className={styles.menuRow}>
+              <div className={styles.menuRowBox}>
+                <span>Sort tagged by:</span>
+                <select className={styles.sortOption}>
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="index">Index</option>
+                </select>
+              </div>
+            </label>
+
             <div className={`${styles.menuRowBox} ${styles.menuRowBoxLast}`}>
               <button
                 type="button"

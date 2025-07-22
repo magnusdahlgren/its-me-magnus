@@ -24,6 +24,7 @@ export function TagSelector({
         .from("notes")
         .select("id, title, is_important")
         .not("title", "is", null)
+        .eq("use_as_tag", true)
         .order("title", { ascending: true });
 
       if (error) {

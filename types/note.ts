@@ -9,6 +9,7 @@ export interface Note {
   is_important: boolean;
   is_private: boolean;
   use_as_tag: boolean;
+  order_tagged_by: "index" | "newest" | "oldest";
   sort_index: number;
   created_at: string;
   updated_at?: string | null;
@@ -22,6 +23,7 @@ export type FormType = {
   is_important: boolean;
   is_private: boolean;
   use_as_tag: boolean;
+  order_tagged_by: "index" | "newest" | "oldest";
   sort_index: number | null;
   updated_at?: string | null;
   tags?: string[];

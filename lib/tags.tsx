@@ -27,7 +27,10 @@ export async function getTagsForNote(
   }));
 }
 
-export async function getNotesForTag(tagId: string): Promise<Note[]> {
+export async function getNotesForTag(
+  tagId: string,
+  orderTaggedBy: "newest" | "oldest" | "index"
+): Promise<Note[]> {
   if (tagId === "_untagged") {
     const { data, error } = await supabase.from("untagged_notes").select("*");
 
@@ -43,11 +46,21 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
   }
 
   // Fetch notes with their tags where tag_id matches
-  const { data, error } = await supabase
-    .from("notes_with_tags")
-    .select("*")
-    .eq("tag_id", tagId)
-    .order("sort_index", { ascending: true });
+
+  let query = supabase.from("notes_with_tags").select("*").eq("tag_id", tagId);
+
+  if (orderTaggedBy === "index") {
+    query = query.order("sort_index", { ascending: true });
+  } else if (orderTaggedBy === "newest") {
+    query = query.order("created_at", { ascending: false });
+  } else {
+    // Default to oldest first
+    query = query.order("created_at", { ascending: true });
+  }
+
+  console.log("Executing query:", orderTaggedBy);
+
+  const { data, error } = await query;
 
   if (error) {
     console.error(
@@ -72,6 +85,7 @@ export async function getNotesForTag(tagId: string): Promise<Note[]> {
         is_important: row.is_important,
         is_private: row.is_private,
         use_as_tag: row.use_as_tag,
+        order_tagged_by: row.order_tagged_by,
         sort_index: row.sort_index,
         created_at: row.created_at,
         updated_at: row.updated_at,

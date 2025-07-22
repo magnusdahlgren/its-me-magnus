@@ -30,6 +30,7 @@ export function NoteForm({
     is_important: initialData?.is_important ?? false,
     is_private: initialData?.is_private ?? false,
     use_as_tag: initialData?.use_as_tag ?? false,
+    order_tagged_by: initialData?.order_tagged_by ?? "oldest",
     sort_index: initialData?.sort_index ?? null,
     tags: initialData?.tags ?? [],
     updated_at: initialData?.updated_at ?? null,
