@@ -4,6 +4,7 @@ import { Modal } from "@/components/Modal";
 import { NoteForm } from "@/components/NoteForm";
 import { useParams } from "next/navigation";
 import { defaultFormData, FormType } from "@/types/note";
+import modalStyles from "@/components/Modal.module.css";
 
 export default function NewNoteModal() {
   const params = useParams();
@@ -15,8 +16,8 @@ export default function NewNoteModal() {
   };
 
   return (
-    <Modal>
-      <NoteForm initialData={initialData} />{" "}
+    <Modal className={modalStyles.modalWidthWide}>
+      <NoteForm initialData={initialData} />
     </Modal>
   );
 }

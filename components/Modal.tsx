@@ -6,9 +6,11 @@ import styles from "./Modal.module.css";
 export function Modal({
   children,
   onClose,
+  className,
 }: Readonly<{
   children: React.ReactNode;
   onClose?: () => void;
+  className?: string;
 }>) {
   const router = useRouter();
 
@@ -18,7 +20,7 @@ export function Modal({
 
   return (
     <dialog className={styles.modalBackdrop}>
-      <div className={styles.modalContent}>
+      <div className={`${styles.modalContent} ${className || ""}`}>
         <button
           type="button"
           className={styles.modalClose}

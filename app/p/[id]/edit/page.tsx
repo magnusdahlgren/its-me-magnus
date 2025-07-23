@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { NoteForm } from "@/components/NoteForm";
 import { getTagsForNote } from "@/lib/tags";
-import styles from "@/components/NoteForm.module.css";
+import modalStyles from "@/components/Modal.module.css";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Modal } from "@/components/Modal";
@@ -72,9 +72,5 @@ export default function EditNoteModal() {
     fetchNoteAndTags();
   }, [id]);
 
-  return (
-    <Modal>
-      <div className={styles.modalContent}>{content}</div>
-    </Modal>
-  );
+  return <Modal className={modalStyles.modalWidthWide}>{content}</Modal>;
 }

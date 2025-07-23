@@ -30,6 +30,16 @@
   max-width: 800px;
 }
 
+@media (max-width: 900px) {
+  .modalWidthWide {
+    height: 100vh;
+  }
+
+  .modalContent {
+    max-height: 100vh;
+  }
+}
+
 .modalWidthNarrow {
   width: 100%;
   max-width: 320px;
