@@ -12,7 +12,7 @@ export default async function TagsPage() {
         {importantTags.map((tag) => (
           <li key={tag.id}>
             <Link href={`/p/${tag.id}`}>{tag.title || tag.id}</Link>{" "}
-            <span>({tag.notesCount})</span>
+            <span>({tag.notesCount + 1})</span>
           </li>
         ))}
       </ul>
@@ -21,7 +21,7 @@ export default async function TagsPage() {
         {otherTags.map((tag) => (
           <li key={tag.id}>
             <Link href={`/p/${tag.id}`}>{tag.title || tag.id}</Link>{" "}
-            <span>({tag.notesCount})</span>
+            <span>({tag.notesCount + 1})</span>
           </li>
         ))}
       </ul>
