@@ -20,7 +20,7 @@ export function Modal({
 
   return (
     <dialog className={styles.modalBackdrop}>
-      <div className={`${styles.modalContent} ${className}`}>
+      <div className={`${styles.modalContent} ${className || ""}`}>
         <button
           type="button"
           className={styles.modalClose}
