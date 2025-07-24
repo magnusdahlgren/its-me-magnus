@@ -6,99 +6,64 @@
 /* 1. Base Reset        */
 /* ==================== */
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
+/* 1. More intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
 h1,
 h2,
 h3,
 h4,
 h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-button,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video,
-input,
-textarea,
-dialog {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-  background: none;
-  text-decoration: none;
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 10. Create a root stacking context */
+#root,
+#__next {
+  isolation: isolate;
 }
 
 /* ==================== */
@@ -272,8 +237,8 @@ pre code {
 /* ==================== */
 
 article {
-  max-width: 800px;
-  margin: 0 clamp(2rem, 10vw, 10rem) 5rem clamp(2rem, 12vw, 10rem);
+  max-width: 50rem;
+  margin: 0 clamp(2rem, 10vw, 10rem) 5rem clamp(2rem, 12vw, 12rem);
 }
 
 article article {
@@ -323,9 +288,8 @@ article tbody tr + tr {
 }
 
 .note--short {
-  padding: 4rem 3rem;
+  padding: 3rem 2rem;
   background-color: hsla(0, 0%, 0%, 0.05);
-  margin-left: 7rem;
 }
 
 @media (max-width: 1100px) {
