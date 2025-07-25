@@ -1,10 +1,10 @@
 export default function NoteLayout({
   children,
-  modal,
-}: Readonly<{
+  ["@modal"]: modal,
+}: {
   children: React.ReactNode;
-  modal: React.ReactNode;
-}>) {
+  ["@modal"]: React.ReactNode;
+}) {
   return (
     <>
       {children}
