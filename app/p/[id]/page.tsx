@@ -39,7 +39,7 @@ export default async function NotePage({ params }: { params: { id: string } }) {
   const notesToShow = await getNotesForTag(note.id, note.order_tagged_by);
 
   return (
-    <div>
+    <main>
       {note && <NoteView note={note} isLead={true} />}
       {notesToShow?.map((taggedNote) => (
         <NoteView
@@ -53,6 +53,6 @@ export default async function NotePage({ params }: { params: { id: string } }) {
           <AddNoteLink tagId={note.id} />
         </article>
       )}
-    </div>
+    </main>
   );
 }
