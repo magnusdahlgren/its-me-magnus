@@ -23,7 +23,7 @@ export async function generateMetadata({
 }
 
 export default async function NotePage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+  const { id } = params;
 
   const note = await getNoteById(id);
 
