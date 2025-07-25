@@ -5,12 +5,18 @@ import { AddNoteLink } from "@/components/AddNoteLink";
 import { Metadata } from "next";
 import { getNoteById } from "@/lib/notes";
 
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
 export async function generateMetadata({
   params,
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = params;
   const { data: note } = await supabase
     .from("notes")
     .select("title")
