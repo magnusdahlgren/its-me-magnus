@@ -5,10 +5,12 @@ import { AddNoteLink } from "@/components/AddNoteLink";
 import { Metadata } from "next";
 import { getNoteById } from "@/lib/notes";
 
+type Params = Promise<{ id: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Params;
 }): Promise<Metadata> {
   const { id } = await params;
   const { data: note } = await supabase
@@ -21,8 +23,7 @@ export async function generateMetadata({
     title: (note?.title ?? "Note not found") + " - MXGNS",
   };
 }
-
-export default async function NotePage({ params }: { params: { id: string } }) {
+export default async function NotePage({ params }: { params: Params }) {
   const { id } = await params;
 
   const note = await getNoteById(id);
