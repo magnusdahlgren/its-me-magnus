@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 export default function NoteLayout({
   children,
-  ["@modal"]: modal,
+  "@modal": modal,
 }: {
-  children: React.ReactNode;
-  ["@modal"]: React.ReactNode;
+  children: ReactNode;
+  "@modal"?: ReactNode;
 }) {
   return (
     <>
