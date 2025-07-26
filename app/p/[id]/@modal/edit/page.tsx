@@ -1,16 +1,16 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { NoteForm } from "@/components/NoteForm";
 import { getTagsForNote } from "@/lib/tags";
 import modalStyles from "@/components/Modal.module.css";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Modal } from "@/components/Modal";
 import type { FormType } from "@/types/note";
 import { getNoteById } from "@/lib/notes";
 
 export default function EditNoteModal() {
+  const router = useRouter();
   const params = useParams();
   const id = typeof params.id === "string" ? params.id : undefined;
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +36,13 @@ export default function EditNoteModal() {
   } else if (!initialData) {
     content = <p>Loading…</p>;
   } else {
-    content = <NoteForm noteId={id} initialData={initialData} />;
+    content = (
+      <NoteForm
+        noteId={id}
+        initialData={initialData}
+        onSuccess={() => router.back()}
+      />
+    );
   }
 
   useEffect(() => {

@@ -15,9 +15,11 @@ import type { FormType } from "@/types/note";
 export function NoteForm({
   initialData,
   noteId,
+  onSuccess,
 }: Readonly<{
   initialData: FormType;
   noteId?: string;
+  onSuccess?: () => void;
 }>) {
   const router = useRouter();
 
@@ -128,7 +130,11 @@ export function NoteForm({
     }
 
     // 5. Redirect
-    router.push(`/p/${currentNoteId}`);
+    if (onSuccess) {
+      onSuccess();
+    } else {
+      router.push(`/p/${currentNoteId}`);
+    }
   }
 
   return (
