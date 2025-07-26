@@ -1,10 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { NoteForm } from "@/components/NoteForm";
 import { getTagsForNote } from "@/lib/tags";
 import modalStyles from "@/components/Modal.module.css";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Modal } from "@/components/Modal";
 import type { FormType } from "@/types/note";
