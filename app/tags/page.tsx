@@ -1,6 +1,8 @@
 import { getAllTags } from "@/lib/tags";
 import Link from "next/link";
 
+export const revalidate = 60;
+
 export default async function TagsPage() {
   const importantTags = await getAllTags(true);
   const otherTags = await getAllTags(false);
