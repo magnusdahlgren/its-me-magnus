@@ -11,11 +11,9 @@ export const metadata = {
 export default function RootLayout({
   children,
   auth,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
   auth?: React.ReactNode;
-  modal?: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -23,7 +21,6 @@ export default function RootLayout({
         <Header />
         {children}
         {auth}
-        {modal}
       </body>
     </html>
   );
