@@ -14,8 +14,8 @@ export default function RootLayout({
   modal,
 }: Readonly<{
   children: React.ReactNode;
-  auth: React.ReactNode;
-  modal: React.ReactNode;
+  auth?: React.ReactNode;
+  modal?: React.ReactNode;
 }>) {
   return (
     <html lang="en">
