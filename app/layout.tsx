@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Header } from "@/components/Header";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   title: "MXGNS",
@@ -21,6 +23,8 @@ export default function RootLayout({
         <Header />
         {children}
         {auth}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
